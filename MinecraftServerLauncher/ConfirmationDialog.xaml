@@ -1,0 +1,24 @@
+﻿<Window x:Class="MinecraftServerLauncher.ConfirmationDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MinecraftServerLauncher"
+        mc:Ignorable="d" Style="{StaticResource LauncherDialogStyle}" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        Title="Are you sure?" Height="200" Width="400">
+    <Grid>
+        <Border Padding="7" Grid.Row="1" Margin="5" Background="{StaticResource Launcher.Window.GrayBrush4}" BorderThickness="4" CornerRadius="20" BorderBrush="{StaticResource Launcher.Window.GrayBrush6}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Are you sure?" HorizontalAlignment="Center" FontSize="35"/>
+                <TextBlock Grid.Row="1" Text="This cannot be undone." HorizontalAlignment="Center" FontSize="20"/>
+                <Button x:Name="okButton" Margin="40,0,0,0" Grid.Row="3" Content="Yes" Width="80" FontSize="20" HorizontalAlignment="Left" Style="{StaticResource NormalButton}" Click="Ok_Button_Clicked"/>
+                <Button x:Name="noButton" Margin="0,0,40,0" Grid.Row="3" Content="No" Width="80" FontSize="20" HorizontalAlignment="Right" Style="{StaticResource NormalButton}" Click="No_Button_Clicked"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,97 @@
+﻿<Window x:Class="MinecraftServerLauncher.CreateServerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MinecraftServerLauncher"
+        mc:Ignorable="d" Style="{StaticResource LauncherDialogStyle}" WindowStartupLocation="CenterOwner"
+        Title="Create Server" MinHeight="610" MinWidth="600" Height="610" Width="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="70"/>
+            <RowDefinition/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Border Margin="5" Background="{StaticResource Launcher.Window.GrayBrush4}" BorderThickness="4" CornerRadius="10" BorderBrush="{StaticResource Launcher.Window.GrayBrush6}">
+            <Grid>
+                <TextBlock Text="Name: " FontSize="20" Margin="10" VerticalAlignment="Center"/>
+                <TextBox x:Name="serverNameInput" Margin="80,0,10,0" Height="40" Text="Minecraft Server" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+            </Grid>
+        </Border>
+        <Border Grid.Row="1" Margin="5" Background="{StaticResource Launcher.Window.GrayBrush4}" BorderThickness="4" CornerRadius="10" BorderBrush="{StaticResource Launcher.Window.GrayBrush6}">
+            <Grid>
+                <TextBlock Text="World Seed: " FontSize="20" Margin="10" VerticalAlignment="Center"/>
+                <TextBox x:Name="serverSeedInput" Margin="130,0,10,0" Height="40" Text="" FontSize="20" VerticalAlignment="Center" MaxLength="20" HorizontalAlignment="Stretch" PreviewTextInput="SeedTextBox_Preview_TextInput"/>
+            </Grid>
+        </Border>
+        <Border Padding="7" Grid.Row="2" Margin="5" Background="{StaticResource Launcher.Window.GrayBrush4}" BorderThickness="4" CornerRadius="10" BorderBrush="{StaticResource Launcher.Window.GrayBrush6}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="170"/>
+                    <ColumnDefinition Width="170"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Text="Version" HorizontalAlignment="Center" FontSize="20" Margin="0,0,5,5"/>
+                <ListBox x:Name="versionListBox" Margin="0,30,5,0" SelectionChanged="CheckVersionSelection" SelectedIndex="0">
+                    <ListBoxItem>
+                        <TextBlock Text="Minecraft 1.21.5" FontSize="17"/>
+                    </ListBoxItem>
+                    <ListBoxItem>
+                        <TextBlock Text="Minecraft 1.16.5" FontSize="17"/>
+                    </ListBoxItem>
+                    <ListBoxItem>
+                        <TextBlock Text="Minecraft 1.12.2" FontSize="17"/>
+                    </ListBoxItem>
+                    <ListBoxItem>
+                        <TextBlock Text="Minecraft 1.8.9" FontSize="17"/>
+                    </ListBoxItem>
+                    <ListBoxItem>
+                        <TextBlock Text="Minecraft 1.7.10" FontSize="17"/>
+                    </ListBoxItem>
+                    <ListBoxItem>
+                        <TextBlock Text="Minecraft 1.0.0" FontSize="17"/>
+                    </ListBoxItem>
+                </ListBox>
+
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="Gamemode" HorizontalAlignment="Center" FontSize="20" Margin="5,0,5,4"/>
+                    <Border x:Name="gamemodeButtons" Margin="5,0" Padding="4" Background="{StaticResource Launcher.Window.GrayBrush3}" BorderBrush="{StaticResource Launcher.Window.GrayBrush6}" BorderThickness="4" CornerRadius="10">
+                        <StackPanel>
+                            <RadioButton x:Name="survivalRadioButton" IsChecked="True" Content="Survival" FontSize="20" Margin="5,0,5,0" Click="SetGamemodeSurvival"/>
+                            <RadioButton Content="Creative" FontSize="20" Margin="5,0,5,0" Click="SetGamemodeCreative"/>
+                            <RadioButton x:Name="hardcoreRadioButton" Content="Hardcore" FontSize="20" Margin="5,0,5,0" Click="SetGamemodeHardcore"/>
+                        </StackPanel>
+                    </Border>
+                    <TextBlock Text="Server Icon (.png)" FontSize="18" Margin="5,5,5,0" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Image must be 64x64" TextWrapping="Wrap" FontSize="12" FontStyle="Italic" Margin="5,0,5,0" HorizontalAlignment="Center"/>
+                    <Border Width="55" Height="55" Margin="5,5,5,0" CornerRadius="2.5" Background="{StaticResource Launcher.Window.GrayBrush3}">
+                        <Image x:Name="serverIconDisplay" Source="\Dictionaries\ServerMysteryIcon.png" Width="50" Height="50"/>
+                    </Border>
+                    <TextBox x:Name="serverIconPath" Margin="5,4,5,0" Height="30" Text="Default icon" FontSize="15" VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
+                    <Button x:Name="browseIcons" Content="Browse for Icons" Margin="5,3,5,0" HorizontalAlignment="Stretch" FontSize="12" Style="{StaticResource NormalButton}" Click="BrowseImage_Button_Clicked"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="IP address" FontSize="18" Margin="5,0,5,0" HorizontalAlignment="Center"/>
+                    <TextBox x:Name="serverIPInput" Margin="5,4,5,0" Height="30" Text="127.0.0.1" FontSize="15" VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
+                    <TextBlock Text="Server Port" FontSize="18" Margin="5,5,5,0" HorizontalAlignment="Center"/>
+                    <TextBox x:Name="serverPortInput" Margin="5,4,5,0" Height="30" Text="28015" FontSize="15" VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
+                    <TextBlock Text="Max Render Distance" FontSize="18" Margin="5,5,5,0" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Values higher than 10 may cause lag" TextWrapping="Wrap" FontSize="12" FontStyle="Italic" Margin="5,0,5,0" HorizontalAlignment="Center"/>
+                    <TextBox x:Name="serverRenderDistInput" Margin="5,4,5,0" Height="30" Text="10" FontSize="15" VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
+                    <TextBlock Text="RAM Allocation (GB)" FontSize="18" Margin="5,5,5,0" HorizontalAlignment="Center"/>
+                    <TextBlock Text="4 to 8 GB is recommended." TextWrapping="Wrap" FontSize="12" FontStyle="Italic" Margin="5,0,5,0" HorizontalAlignment="Center"/>
+                    <TextBox x:Name="serverRamInput" Margin="5,4,5,0" Height="30" Text="4" FontSize="15" VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
+                </StackPanel>
+            </Grid> 
+        </Border>
+        <ProgressBar x:Name="progressBar" Grid.Row="3" Margin="5"/>
+        <Button x:Name="cancelButton" Grid.Row="4" Content="Cancel" Width="140" Margin="40,0" HorizontalAlignment="Left" FontSize="20" Style="{StaticResource NormalButton}" Click="Cancel_Button_Clicked"/>
+        <Button x:Name="createButton" Grid.Row="4" Content="Create Server" Width="140" Margin="40,0" HorizontalAlignment="Right" FontSize="20" Style="{StaticResource NormalButton}" Click="CreateServer_Button_Clicked"/>
+        <TextBlock x:Name="errorText" Text="" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Foreground="{StaticResource Launcher.RedBrush}" Grid.Row="5"/>
+    </Grid>
+</Window>

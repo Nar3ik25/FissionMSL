@@ -1,0 +1,65 @@
+﻿<Window x:Class="MinecraftServerLauncher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:consoleControl="clr-namespace:ConsoleControl.WPF;assembly=ConsoleControl.WPF"
+        xmlns:local="clr-namespace:MinecraftServerLauncher"
+        xmlns:view="clr-namespace:MinecraftServerLauncher.UserControls"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="Fission MSL" MinHeight="450" MinWidth="650" Height="460" Width="700"
+        Style="{StaticResource LauncherWindowStyle}">
+    <Grid>
+        <Grid x:Name="MainPanel">
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,8,0,0">
+                <Button Width="50" Height="50" Margin="0,5,0,5" Style="{StaticResource CatagoryButtons}" Click="Server_CatagoryButton_Clicked">
+                    <Image Source="/Dictionaries/ServerIcon1.png" Stretch="Uniform"/>
+                </Button>
+            </StackPanel>
+
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="5,8,0,0">
+                <Button Width="50" Height="50" Margin="0,5,0,5" Style="{StaticResource CatagoryButtons}" Click="Updates_CatagoryButton_Clicked">
+                    <Image Source="/Dictionaries/UpdateIcon1.png" Stretch="Uniform"/>
+                </Button>
+                <Button Width="50" Height="50" Margin="0,5,0,5" Style="{StaticResource CatagoryButtons}" Click="Settings_CatagoryButton_Clicked">
+                    <Image Source="/Dictionaries/GearIcon.png" Stretch="Uniform"/>
+                </Button>
+            </StackPanel>
+
+            <Border Margin="60,10,0,0" Padding="10" Background="{StaticResource Launcher.Window.GrayBrush4}" BorderBrush="{StaticResource Launcher.Window.GrayBrush2}" BorderThickness="2,2,0,0" CornerRadius="20,0,0,0">
+                <Grid>
+                    <view:ServerView x:Name="serverView"/>
+                    <view:ServerSettingsView x:Name="serverSettingsView" Visibility="Hidden"/>
+                    <view:UpdatesView x:Name="updatesView" Visibility="Hidden"/>
+                    <view:SettingsView x:Name="settingsView" Visibility="Hidden"/>
+                </Grid>
+            </Border>
+        </Grid>
+        <Grid x:Name="ConsolePanel" Visibility="Hidden">
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,8,0,0">
+                <Button x:Name="stopButton" Width="50" Height="50" Margin="0,5,0,5" Style="{StaticResource CatagoryButtonsClose}" Click="On_ServerStopButton_Clicked">
+                    <Rectangle Fill="White" Width="20" Height="20"/>
+                </Button>
+            </StackPanel>
+
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="5,8,0,0">
+                <Button x:Name="commandsButton" Width="50" Height="50" Margin="0,5,0,5" Style="{StaticResource CatagoryButtons}" Click="On_CommandsButton_Clicked">
+                    <Image Source="/Dictionaries/CommandsIcon1.png" Stretch="Uniform"/>
+                </Button>
+            </StackPanel>
+
+            <Border Margin="60,10,0,0" Padding="10" Background="{StaticResource Launcher.Window.GrayBrush4}" BorderBrush="{StaticResource Launcher.Window.GrayBrush2}" BorderThickness="2,2,0,0" CornerRadius="20,0,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="35"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Minecraft Server" x:Name="serverNameText" Margin="0" FontSize="25" VerticalAlignment="Center"/>
+                    <consoleControl:ConsoleControl Grid.Row="1" x:Name="consoleControl" IsInputEnabled="False"/>
+                    <TextBox x:Name="consoleInputBox" AcceptsReturn="False" AcceptsTab="False" KeyDown="consoleInputBox_KeyDown" Text="" FontSize="14" Grid.Row="2" Style="{StaticResource consoleTextBox}"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

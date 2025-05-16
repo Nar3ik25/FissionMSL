@@ -1,0 +1,21 @@
+﻿<Window x:Class="MinecraftServerLauncher.AppSetupDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MinecraftServerLauncher"
+        mc:Ignorable="d" Style="{StaticResource LauncherDialogStyle}" Topmost="True" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        Title="Fission MSL First Launch Setup" Height="160" Width="400">
+    <Grid>
+        <Border Padding="7" Grid.Row="1" Margin="5" Background="{StaticResource Launcher.Window.GrayBrush4}" BorderThickness="4" CornerRadius="20" BorderBrush="{StaticResource Launcher.Window.GrayBrush6}">
+            <Grid VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="20"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Setting things up..." HorizontalAlignment="Center" FontSize="30"/>
+                <ProgressBar x:Name="progBar1" Grid.Row="1"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
