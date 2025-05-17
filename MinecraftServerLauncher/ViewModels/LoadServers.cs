@@ -97,191 +97,198 @@ namespace MinecraftServerLauncher.ViewModels
         /// </summary>
         public static void RefreshList()
         {
-            List<string> pathLines = new List<string>();
-
-            if (File.Exists(_applicationDataPath + "ServerList.txt"))
+            try
             {
-                _servers.Clear();
-                int id = 0;
+                List<string> pathLines = new List<string>();
 
-                pathLines = File.ReadAllLines(_applicationDataPath + "ServerList.txt").ToList();
-                List<string> lostLines = new List<string>();
-
-                foreach (string line in pathLines)
+                if (File.Exists(_applicationDataPath + "ServerList.txt"))
                 {
-                    if (File.Exists(line))
+                    _servers.Clear();
+                    int id = 0;
+
+                    pathLines = File.ReadAllLines(_applicationDataPath + "ServerList.txt").ToList();
+                    List<string> lostLines = new List<string>();
+
+                    foreach (string line in pathLines)
                     {
-                        List<string> lines = File.ReadAllLines(line).ToList();
-                        ServerData serverData = new ServerData();
-
-                        // Start of the sorting regexes
-                        var nameRegex = new Regex(@"(?:^|\W)name(?:$|\W)");
-                        var pathRegex = new Regex(@"(?:^|\W)jar-(?:$|\W)");
-                        var filePathRegex = new Regex(@"(?:^|\W)file(?:$|\W)");
-                        var ramRegex = new Regex(@"(?:^|\W)ram-(?:$|\W)");
-                        var dateRegex = new Regex(@"(?:^|\W)date(?:$|\W)");
-                        var seedRegex = new Regex(@"(?:^|\W)seed(?:$|\W)");
-                        var motdRegex = new Regex(@"(?:^|\W)motd(?:$|\W)");
-                        var portRegex = new Regex(@"(?:^|\W)server-p(?:$|\W)");
-                        var ipRegex = new Regex(@"(?:^|\W)server-i(?:$|\W)");
-                        var viewDistRegex = new Regex(@"(?:^|\W)view-dis(?:$|\W)");
-                        var gamemodeRegex = new Regex(@"(?:^|\W)gamemode(?:$|\W)");
-                        var hardcoreRegex = new Regex(@"(?:^|\W)hardcore(?:$|\W)");
-                        // End of the sorting regexes
-
-                        // Sorts through all of the lines in the 'FissionMSL.data' file
-                        for (int i = 0; i < lines.Count; i++)
+                        if (File.Exists(line))
                         {
-                            var firstFourChars0 = lines[i].Length <= 4 ? lines[i] : lines[i].Substring(0, 4);
-                            if (nameRegex.IsMatch(firstFourChars0))
+                            List<string> lines = File.ReadAllLines(line).ToList();
+                            ServerData serverData = new ServerData();
+
+                            // Start of the sorting regexes
+                            var nameRegex = new Regex(@"(?:^|\W)name(?:$|\W)");
+                            var pathRegex = new Regex(@"(?:^|\W)jar-(?:$|\W)");
+                            var filePathRegex = new Regex(@"(?:^|\W)file(?:$|\W)");
+                            var ramRegex = new Regex(@"(?:^|\W)ram-(?:$|\W)");
+                            var dateRegex = new Regex(@"(?:^|\W)date(?:$|\W)");
+                            var seedRegex = new Regex(@"(?:^|\W)seed(?:$|\W)");
+                            var motdRegex = new Regex(@"(?:^|\W)motd(?:$|\W)");
+                            var portRegex = new Regex(@"(?:^|\W)server-p(?:$|\W)");
+                            var ipRegex = new Regex(@"(?:^|\W)server-i(?:$|\W)");
+                            var viewDistRegex = new Regex(@"(?:^|\W)view-dis(?:$|\W)");
+                            var gamemodeRegex = new Regex(@"(?:^|\W)gamemode(?:$|\W)");
+                            var hardcoreRegex = new Regex(@"(?:^|\W)hardcore(?:$|\W)");
+                            // End of the sorting regexes
+
+                            // Sorts through all of the lines in the 'FissionMSL.data' file
+                            for (int i = 0; i < lines.Count; i++)
                             {
-                                serverData.ServerName = lines[i].Substring(lines[i].IndexOf('=') + 1);
-                            }
-                            else if (pathRegex.IsMatch(firstFourChars0))
-                            {
-                                serverData.ServerPath = lines[i].Substring(lines[i].IndexOf('=') + 1);
-                            }
-                            else if (filePathRegex.IsMatch(firstFourChars0))
-                            {
-                                serverData.ServerFilePath = lines[i].Substring(lines[i].IndexOf('=') + 1);
-                            }
-                            else if (ramRegex.IsMatch(firstFourChars0))
-                            {
-                                serverData.ServerRam = lines[i].Substring(lines[i].IndexOf('=') + 1);
-                            }
-                            else if (dateRegex.IsMatch(firstFourChars0))
-                            {
-                                var stringDate = lines[i].Substring(lines[i].IndexOf('=') + 1);
-                                if (stringDate == "never")
+                                var firstFourChars0 = lines[i].Length <= 4 ? lines[i] : lines[i].Substring(0, 4);
+                                if (nameRegex.IsMatch(firstFourChars0))
                                 {
-                                    serverData.LastUsedDate = DateTime.MinValue;
+                                    serverData.ServerName = lines[i].Substring(lines[i].IndexOf('=') + 1);
                                 }
-                                else
+                                else if (pathRegex.IsMatch(firstFourChars0))
                                 {
-                                    serverData.LastUsedDate = DateTime.Parse(stringDate);
+                                    serverData.ServerPath = lines[i].Substring(lines[i].IndexOf('=') + 1);
                                 }
-                            }
-                        }
-
-                        // Checks if this is a valid 'FissionMSL.data' file
-                        if (!Directory.Exists(serverData.ServerFilePath))
-                        {
-                            // If not valid, this server will be removed from the 'ServerList.txt' file
-                            lostLines.Add(line);
-                        }
-                        else
-                        {
-                            // If valid, check the server version file and finalize adding the server to the list view
-
-                            string[] version = Directory.GetFiles(serverData.ServerFilePath, "*.version");
-
-                            if (version[0] == null)
-                            {
-                                serverData.ServerVersion = "Unknown Version";
-                            }
-                            else
-                            {
-                                serverData.ServerVersion = "Minecraft " + Path.GetFileNameWithoutExtension(version[0]);
-                            }
-
-                            // Looks at the server.properties file and gets the relevent data.
-                            if (File.Exists(serverData.ServerFilePath + "server.properties"))
-                            {
-                                string[] propertiesLines = File.ReadAllLines(serverData.ServerFilePath + "server.properties");
-
-                                for (int i = 0; i < propertiesLines.Length; i++)
+                                else if (filePathRegex.IsMatch(firstFourChars0))
                                 {
-                                    var firstEightChars = propertiesLines[i].Length <= 8 ? propertiesLines[i] : propertiesLines[i].Substring(0, 8);
-
-                                    if (ipRegex.IsMatch(firstEightChars))
+                                    serverData.ServerFilePath = lines[i].Substring(lines[i].IndexOf('=') + 1);
+                                }
+                                else if (ramRegex.IsMatch(firstFourChars0))
+                                {
+                                    serverData.ServerRam = lines[i].Substring(lines[i].IndexOf('=') + 1);
+                                }
+                                else if (dateRegex.IsMatch(firstFourChars0))
+                                {
+                                    var stringDate = lines[i].Substring(lines[i].IndexOf('=') + 1);
+                                    if (stringDate == "never")
                                     {
-                                        serverData.ServerIP = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
-                                    }
-                                    else if (portRegex.IsMatch(firstEightChars))
-                                    {
-                                        serverData.ServerPort = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
-                                    }
-                                    else if (gamemodeRegex.IsMatch(firstEightChars))
-                                    {
-                                        serverData.ServerGamemode = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
-                                    }
-                                    else if (viewDistRegex.IsMatch(firstEightChars))
-                                    {
-                                        serverData.ServerRenderDistance = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
-                                    }
-                                    else if (hardcoreRegex.IsMatch(firstEightChars))
-                                    {
-                                        var boolean = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
-                                        if (boolean == "true")
-                                            serverData.ServerHardcore = true;
-                                        else
-                                            serverData.ServerHardcore = false;
+                                        serverData.LastUsedDate = DateTime.MinValue;
                                     }
                                     else
                                     {
-                                        var firstFourChars = propertiesLines[i].Length <= 4 ? propertiesLines[i] : propertiesLines[i].Substring(0, 4);
-
-                                        if (seedRegex.IsMatch(firstFourChars))
-                                        {
-                                            serverData.ServerSeed = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
-                                        }
-                                        else if (motdRegex.IsMatch(firstFourChars))
-                                        {
-                                            serverData.MOTD = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
-
-                                            if (string.IsNullOrEmpty(serverData.MOTD))
-                                                serverData.MOTD = @"\u00a77Hosted with\u00a74 Fission\u00a7fMSL";
-                                        }
+                                        serverData.LastUsedDate = DateTime.Parse(stringDate);
                                     }
                                 }
                             }
 
-                            if (File.Exists(serverData.ServerFilePath + "server-icon.png"))
+                            // Checks if this is a valid 'FissionMSL.data' file
+                            if (!Directory.Exists(serverData.ServerFilePath))
                             {
-                                Bitmap img = new Bitmap(serverData.ServerFilePath + "server-icon.png");
-                                serverData.ServerIcon = MainWindow.Bitmap2BitmapImage(img);
+                                // If not valid, this server will be removed from the 'ServerList.txt' file
+                                lostLines.Add(line);
                             }
                             else
                             {
-                                serverData.ServerIcon = new BitmapImage(new Uri("pack://application:,,,/Dictionaries/ServerMysteryIcon.png", UriKind.Absolute));
+                                // If valid, check the server version file and finalize adding the server to the list view
+
+                                string[] version = Directory.GetFiles(serverData.ServerFilePath, "*.version");
+
+                                if (version[0] == null)
+                                {
+                                    serverData.ServerVersion = "Unknown Version";
+                                }
+                                else
+                                {
+                                    serverData.ServerVersion = "Minecraft " + Path.GetFileNameWithoutExtension(version[0]);
+                                }
+
+                                // Looks at the server.properties file and gets the relevent data.
+                                if (File.Exists(serverData.ServerFilePath + "server.properties"))
+                                {
+                                    string[] propertiesLines = File.ReadAllLines(serverData.ServerFilePath + "server.properties");
+
+                                    for (int i = 0; i < propertiesLines.Length; i++)
+                                    {
+                                        var firstEightChars = propertiesLines[i].Length <= 8 ? propertiesLines[i] : propertiesLines[i].Substring(0, 8);
+
+                                        if (ipRegex.IsMatch(firstEightChars))
+                                        {
+                                            serverData.ServerIP = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
+                                        }
+                                        else if (portRegex.IsMatch(firstEightChars))
+                                        {
+                                            serverData.ServerPort = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
+                                        }
+                                        else if (gamemodeRegex.IsMatch(firstEightChars))
+                                        {
+                                            serverData.ServerGamemode = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
+                                        }
+                                        else if (viewDistRegex.IsMatch(firstEightChars))
+                                        {
+                                            serverData.ServerRenderDistance = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
+                                        }
+                                        else if (hardcoreRegex.IsMatch(firstEightChars))
+                                        {
+                                            var boolean = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
+                                            if (boolean == "true")
+                                                serverData.ServerHardcore = true;
+                                            else
+                                                serverData.ServerHardcore = false;
+                                        }
+                                        else
+                                        {
+                                            var firstFourChars = propertiesLines[i].Length <= 4 ? propertiesLines[i] : propertiesLines[i].Substring(0, 4);
+
+                                            if (seedRegex.IsMatch(firstFourChars))
+                                            {
+                                                serverData.ServerSeed = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
+                                            }
+                                            else if (motdRegex.IsMatch(firstFourChars))
+                                            {
+                                                serverData.MOTD = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
+
+                                                if (string.IsNullOrEmpty(serverData.MOTD))
+                                                    serverData.MOTD = @"\u00a77Hosted with\u00a74 Fission\u00a7fMSL";
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (File.Exists(serverData.ServerFilePath + "server-icon.png"))
+                                {
+                                    Bitmap img = new Bitmap(serverData.ServerFilePath + "server-icon.png");
+                                    serverData.ServerIcon = MainWindow.Bitmap2BitmapImage(img);
+                                }
+                                else
+                                {
+                                    serverData.ServerIcon = new BitmapImage(new Uri("pack://application:,,,/Dictionaries/ServerMysteryIcon.png", UriKind.Absolute));
+                                }
+
+                                serverData.ID = id;
+                                id++;
+
+                                serverData.FinishData();
+
+                                _servers.Add(serverData);
                             }
-
-                            serverData.ID = id;
-                            id++;
-
-                            serverData.FinishData();
-
-                            _servers.Add(serverData);
+                        }
+                        else
+                        {
+                            // Adds this server to the invalid server list
+                            lostLines.Add(line);
                         }
                     }
-                    else
+
+                    // Remove all invalid servers from the 'ServerList.txt' file
+                    foreach (string lostLine in lostLines)
                     {
-                        // Adds this server to the invalid server list
-                        lostLines.Add(line);
+                        pathLines.Remove(lostLine);
+                    }
+
+                    try
+                    {
+                        if (File.Exists(_applicationDataPath + "ServerList.txt"))
+                        {
+                            File.WriteAllLines(_applicationDataPath + "ServerList.txt", pathLines);
+                        }
+                    }
+                    catch
+                    {
+
                     }
                 }
-
-                // Remove all invalid servers from the 'ServerList.txt' file
-                foreach (string lostLine in lostLines)
+                else
                 {
-                    pathLines.Remove(lostLine);
-                }
-
-                try
-                {
-                    if (File.Exists(_applicationDataPath + "ServerList.txt"))
-                    {
-                        File.WriteAllLines(_applicationDataPath + "ServerList.txt", pathLines);
-                    }
-                }
-                catch
-                {
-
+                    _servers.Clear();
                 }
             }
-            else
+            catch
             {
-                _servers.Clear();
+                // TODO: Probably need an error message for this, not sure yet though.
             }
         }
 
