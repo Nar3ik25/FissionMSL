@@ -1,5 +1,5 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-05-16 at 23:22
+// Last changed on 2025-05-17 at 05:31
 // Yippieeee!
 
 using System.Collections.ObjectModel;
@@ -232,7 +232,7 @@ namespace MinecraftServerLauncher.ViewModels
                                                 serverData.MOTD = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
 
                                                 if (string.IsNullOrEmpty(serverData.MOTD))
-                                                    serverData.MOTD = @"\u00a77Hosted with\u00a74 Fission\u00a7fMSL";
+                                                    serverData.MOTD = @"\u00a76\u2550\u2550 \u2605\u00a7b A Cool Minecraft Server \u00a76\u2605 \u2550\u2550\u00a7r\n\u00a77Hosted with\u00a7f Fission\u00a74 MSL";
                                             }
                                         }
                                     }

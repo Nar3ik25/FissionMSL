@@ -22,9 +22,11 @@ namespace MinecraftServerLauncher.Dictionaries
             window.WindowState = WindowState.Minimized;
         }
 
-        private void OnHome_Button_Click(object sender, RoutedEventArgs e)
+        private void OnHelp_Button_Click(object sender, RoutedEventArgs e)
         {
-
+            HelpWindow hp = new HelpWindow();
+            hp.Owner = MainWindow.Instance;
+            hp.Show();
         }
     }
 }

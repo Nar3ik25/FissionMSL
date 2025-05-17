@@ -1,0 +1,23 @@
+﻿<Window x:Class="MinecraftServerLauncher.HelpWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MinecraftServerLauncher"
+        mc:Ignorable="d" Style="{StaticResource LauncherDialogStyle}" WindowStartupLocation="CenterOwner"
+        Title="Help Window" MinHeight="480" MinWidth="600" Height="480" Width="600">
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <Border Padding="3" Grid.Row="0" Margin="5" Background="{StaticResource Launcher.Window.GrayBrush4}" BorderThickness="4" CornerRadius="10" BorderBrush="{StaticResource Launcher.Window.GrayBrush6}">
+                <Grid>
+                    <TextBlock Text="WIP (Coming soon!)" FontSize="30" Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Grid>
+            </Border>
+            <Button x:Name="cancelButton" Grid.Row="1" Content="Close" Width="140" Margin="6,0,0,0" HorizontalAlignment="Left" FontSize="20" Style="{StaticResource NormalButton}" Click="Close_Button_Clicked"/>
+        </Grid>
+    </Grid>
+</Window>

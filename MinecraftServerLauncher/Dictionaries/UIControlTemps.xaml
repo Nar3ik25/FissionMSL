@@ -1653,6 +1653,12 @@
                                         <Rectangle Stroke="{StaticResource Launcher.FontBrush}" StrokeThickness="1" Width="20" Height="1" Margin="0,4,0,0"/>
                                     </Button.Content>
                                 </Button>
+
+                                <Button x:Name="btnHelp" Click="OnHelp_Button_Click">
+                                    <Button.Content>
+                                        <Image Width="25" Height="25" Source="\Dictionaries\QuestionIcon1.png"/>
+                                    </Button.Content>
+                                </Button>
                             </DockPanel>
                         </Grid>
                     </Border>

@@ -1,5 +1,5 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-05-17 at 00:28
+// Last changed on 2025-05-17 at 05:36
 // 1..2..3..4.. what comes after 4?
 
 using System.Diagnostics;
@@ -116,7 +116,7 @@ namespace MinecraftServerLauncher.UserControls
                     sw.Close();
                 }
 
-                File.WriteAllText(ServerFilePath + "fissionMSL.fmsl", ServerData);
+                File.WriteAllText(ServerFilePath + serverName.Text + ".fmsl", ServerData);
                 LoadServers.RefreshList();
                 MainWindow.Instance.CloseServerSettings();
             }

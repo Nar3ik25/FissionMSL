@@ -1,5 +1,5 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-05-17 at 00:44
+// Last changed on 2025-05-17 at 05:31
 // Don't you love when the errors solve themselves?
 
 using MinecraftServerLauncher.ViewModels;
@@ -27,7 +27,7 @@ namespace MinecraftServerLauncher
         public static readonly string ApplicationDataPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\FissionMSL\";
 
         // The application version number (Must be changed for each update!)
-        public static readonly Version InstalledVersion = new Version(0, 3, 0, 1);
+        public static readonly Version InstalledVersion = new Version(0, 3, 0, 2);
 
         // Java path for the application.
         public static string ApplicationJavaPath = null;
@@ -296,19 +296,14 @@ namespace MinecraftServerLauncher
             ChangePanelVisibility(0);
         }
 
-        private void Documents_CatagoryButton_Clicked(object sender, RoutedEventArgs e)
+        private void Updates_CatagoryButton_Clicked(object sender, RoutedEventArgs e)
         {
             ChangePanelVisibility(1);
         }
 
-        private void Updates_CatagoryButton_Clicked(object sender, RoutedEventArgs e)
-        {
-            ChangePanelVisibility(2);
-        }
-
         private void Settings_CatagoryButton_Clicked(object sender, RoutedEventArgs e)
         {
-            ChangePanelVisibility(3);
+            ChangePanelVisibility(2);
         }
 
         private void ChangePanelVisibility(int id)
@@ -318,28 +313,18 @@ namespace MinecraftServerLauncher
                 case 0:
                     serverView.Visibility = Visibility.Visible;
                     serverSettingsView.Visibility = Visibility.Hidden;
-                    docView.Visibility = Visibility.Hidden;
                     updatesView.Visibility = Visibility.Hidden;
                     settingsView.Visibility = Visibility.Hidden;
                     break;
                 case 1:
                     serverView.Visibility = Visibility.Hidden;
                     serverSettingsView.Visibility = Visibility.Hidden;
-                    docView.Visibility = Visibility.Visible;
-                    updatesView.Visibility = Visibility.Hidden;
+                    updatesView.Visibility = Visibility.Visible;
                     settingsView.Visibility = Visibility.Hidden;
                     break;
                 case 2:
                     serverView.Visibility = Visibility.Hidden;
                     serverSettingsView.Visibility = Visibility.Hidden;
-                    docView.Visibility = Visibility.Hidden;
-                    updatesView.Visibility = Visibility.Visible;
-                    settingsView.Visibility = Visibility.Hidden;
-                    break;
-                case 3:
-                    serverView.Visibility = Visibility.Hidden;
-                    serverSettingsView.Visibility = Visibility.Hidden;
-                    docView.Visibility = Visibility.Hidden;
                     updatesView.Visibility = Visibility.Hidden;
                     settingsView.appServerPathInput.Text = ApplicationServerPath;
                     settingsView.appJavaPathInput.Text = ApplicationJavaPath;

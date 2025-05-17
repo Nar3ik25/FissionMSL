@@ -1,5 +1,5 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-05-17 at 00:29
+// Last changed on 2025-05-17 at 05:35
 // Twenty-eight stab wounds!
 
 using System.ComponentModel;
@@ -25,7 +25,7 @@ namespace MinecraftServerLauncher
         string JavaPath = string.Empty;
         string gamemode = "survival";
         string hardcore = "false";
-        string MOTD = @"\u00a77Hosted with\u00a74 Fission\u00a7fMSL";
+        string MOTD = @"\u00a76\u2550\u2550 \u2605\u00a7b A Cool Minecraft Server \u00a76\u2605 \u2550\u2550\u00a7r\n\u00a77Hosted with\u00a7f Fission\u00a74 MSL";
 
         bool isImagePathFull = false;
 
@@ -293,7 +293,7 @@ namespace MinecraftServerLauncher
                 sw.Write(string.Format(PropertiesTemplate, serverIPInput.Text, serverPortInput.Text, serverRenderDistInput.Text, gamemode, hardcore, serverSeedInput.Text, MOTD));
                 sw.Close();
             }
-            File.WriteAllText(ServerFilePath + "fissionMSL.fmsl", ServerData);
+            File.WriteAllText(ServerFilePath + serverNameInput.Text + ".fmsl", ServerData);
 
             if (isImagePathFull)
             {
@@ -311,13 +311,13 @@ namespace MinecraftServerLauncher
                 if (File.Exists(_applicationDataPath + "ServerList.txt"))
                 {
                     pathLines = File.ReadAllLines(_applicationDataPath + "ServerList.txt").ToList();
-                    pathLines.Add(ServerFilePath + "fissionMSL.fmsl");
+                    pathLines.Add(ServerFilePath + serverNameInput.Text + ".fmsl");
                     File.WriteAllLines(_applicationDataPath + "ServerList.txt", pathLines);
                 }
                 else
                 {
                     Directory.CreateDirectory(_applicationDataPath);
-                    File.WriteAllText(_applicationDataPath + "ServerList.txt", ServerFilePath + "fissionMSL.fmsl");
+                    File.WriteAllText(_applicationDataPath + "ServerList.txt", ServerFilePath + serverNameInput.Text + ".fmsl");
                 }
             }
             catch
