@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MinecraftServerLauncher.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="750" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
@@ -25,26 +25,36 @@
                         <TextBlock x:Name="serverName" Text="Placeholder name (this is a bug)" Margin="5,5,5,0" FontSize="25" VerticalAlignment="Top"/>
                     </StackPanel>
                     <Rectangle Height="2" Margin="5,7,5,7" Fill="{StaticResource Launcher.Window.GrayBrush6}"/>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Server IP: " Margin="5,5,0,5" FontSize="15" VerticalAlignment="Center"/>
-                        <TextBlock x:Name="serverIP" Text="Placeholder IP (this is a bug)" Margin="5,5,5,5" FontSize="15" VerticalAlignment="Center"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Server Port: " Margin="5,5,0,5" FontSize="15" VerticalAlignment="Center"/>
-                        <TextBlock x:Name="serverPort" Text="Placeholder Port (this is a bug)" Margin="5,5,5,5" FontSize="15" VerticalAlignment="Center"/>
-                    </StackPanel>
+                    <TextBlock Text="Server IP" FontSize="18" Margin="5,0,0,0" HorizontalAlignment="Left"/>
+                    <TextBox x:Name="serverIPInput" Margin="5,4,0,0" Height="30" Text="127.0.0.1" FontSize="15" VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
+                    <TextBlock x:Name="IPErrorText" Text="" Foreground="{StaticResource Launcher.RedBrush}" Margin="5,0,0,5" FontSize="15" VerticalAlignment="Top"/>
+                    
+                    <TextBlock Text="Server Port" FontSize="18" Margin="5,0,0,0" HorizontalAlignment="Left"/>
+                    <TextBox x:Name="serverPortInput" Margin="5,4,0,0" Height="30" Text="28016" FontSize="15" VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
+                    <TextBlock x:Name="portErrorText" Text="" Foreground="{StaticResource Launcher.RedBrush}" Margin="5,0,0,5" FontSize="15" VerticalAlignment="Top"/>
+                    
                     <Button Content="Copy IP and Port" Width="250" FontSize="20" Margin="5,5,0,10" Style="{StaticResource NormalButton}" HorizontalAlignment="Left" Click="CopyAddress_Button_Clicked"/>
+                    
                     <Rectangle Height="2" Margin="5,7,5,7" Fill="{StaticResource Launcher.Window.GrayBrush6}"/>
+                    
                     <TextBlock Text="RAM Allocation (GB)" FontSize="18" Margin="5,0,0,0" HorizontalAlignment="Left"/>
                     <TextBox x:Name="serverRamInput" Margin="5,4,0,0" Height="30" Text="4" FontSize="15" VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
                     <TextBlock x:Name="ramErrorText" Text="" Foreground="{StaticResource Launcher.RedBrush}" Margin="5,0,0,5" FontSize="15" VerticalAlignment="Top"/>
+                    
+                    <TextBlock Text="Max Render Distance" FontSize="18" Margin="5,0,0,0" HorizontalAlignment="Left"/>
+                    <TextBox x:Name="serverRenderDistInput" Margin="5,4,0,0" Height="30" Text="10" FontSize="15" VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
+                    <TextBlock x:Name="renderDistErrorText" Text="" Foreground="{StaticResource Launcher.RedBrush}" Margin="5,0,0,5" FontSize="15" VerticalAlignment="Top"/>
+                    
                     <Rectangle Height="2" Margin="5,7,5,7" Fill="{StaticResource Launcher.Window.GrayBrush6}"/>
+                    
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Server Path: " Margin="5,5,0,0" FontSize="15" VerticalAlignment="Top"/>
                         <TextBlock x:Name="serverPath" Text="Placeholder path (this is a bug)" Margin="5,5,5,0" FontSize="15" VerticalAlignment="Top"/>
                     </StackPanel>
                     <Button Content="Open File Location" Width="250" FontSize="20" Margin="5,5,0,10" Style="{StaticResource NormalButton}" HorizontalAlignment="Left" Click="OpenFolder_Button_Clicked"/>
+                    
                     <Rectangle Height="2" Margin="5,7,5,7" Fill="{StaticResource Launcher.Window.GrayBrush6}"/>
+                    
                     <TextBlock Text="WARNING: If you didn't set a seed, the world will be randomized!" Margin="5,10,0,0" FontSize="15" VerticalAlignment="Top"/>
                     <Button Content="Reset World" Width="250" FontSize="20" Margin="5,5,0,10" Style="{StaticResource NormalDeleteButton}" HorizontalAlignment="Left" Click="ResetWorld_Button_Clicked"/>
                     <TextBlock Text="WARNING: This will delete the server forever, you will lose everything!" Margin="5,10,0,0" FontSize="15" VerticalAlignment="Top"/>

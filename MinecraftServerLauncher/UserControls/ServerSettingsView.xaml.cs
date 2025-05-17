@@ -1,5 +1,5 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-04-27 at 02:58
+// Last changed on 2025-05-17 at 00:28
 // 1..2..3..4.. what comes after 4?
 
 using System.Diagnostics;
@@ -19,7 +19,10 @@ namespace MinecraftServerLauncher.UserControls
         public string ServerPath = null;
         public string ServerFilePath = null;
         public string JavaPath = null;
+        public string MOTD = "";
+        public string Seed = "";
         public string gamemode = "";
+        public DateTime date = DateTime.MinValue;
         public bool hardcore = false;
 
         public ServerSettingsView()
@@ -31,6 +34,12 @@ namespace MinecraftServerLauncher.UserControls
         private void BacktoList_Button_Clicked(object sender, RoutedEventArgs e)
         {
             int ram = 0;
+            int port = 0;
+            int renderDist = 0;
+
+            ramErrorText.Text = "";
+            portErrorText.Text = "";
+            renderDistErrorText.Text = "";
 
             if (!Int32.TryParse(serverRamInput.Text, out ram))
             {
@@ -47,6 +56,31 @@ namespace MinecraftServerLauncher.UserControls
                 ramErrorText.Text = "RAM Allocation cannot be higher than 32GB!";
                 return;
             }
+            else if (!Int32.TryParse(serverPortInput.Text, out port))
+            {
+                portErrorText.Text = "Invalid Server Port!";
+                return;
+            }
+            else if (port < 1025 || port > 65534)
+            {
+                portErrorText.Text = "Invalid Server Port!";
+                return;
+            }
+            else if (!Int32.TryParse(serverRenderDistInput.Text, out renderDist))
+            {
+                renderDistErrorText.Text = "Invalid Render Distance!";
+                return;
+            }
+            else if (renderDist < 2)
+            {
+                renderDistErrorText.Text = "Render Distance cannot be lower than 2!";
+                return;
+            }
+            else if (renderDist > 32)
+            {
+                renderDistErrorText.Text = "Render Distance cannot be higher than 32!";
+                return;
+            }
             else
             {
                 string hardcoreStr = "";
@@ -59,19 +93,30 @@ namespace MinecraftServerLauncher.UserControls
                     hardcoreStr = "false";
                 }
 
+                string sDate;
+                if (date == DateTime.MinValue)
+                {
+                    sDate = "never";
+                }
+                else
+                {
+                    sDate = date.ToString();
+                }
+
                 string ServerData = "#FissionMSL data file" +
                                     "\nname=" + serverName.Text +
                                     "\njar-path=" + ServerPath +
                                     "\nfile-path=" + ServerFilePath +
-                                    "\njava-path=" + JavaPath +
                                     "\nram-allocation=" + ram +
-                                    "\ntime=" + DateTime.UtcNow +
-                                    "\nport=" + serverPort.Text +
-                                    "\nipv4=" + serverIP.Text +
-                                    "\ngamemode=" + gamemode +
-                                    "\nhardcore=" + hardcoreStr;
+                                    "\ndate=" + sDate;
 
-                File.WriteAllText(ServerFilePath + "fissionMSL.data", ServerData);
+                using (var sw = File.CreateText(ServerFilePath + "server.properties"))
+                {
+                    sw.Write(string.Format(CreateServerWindow.PropertiesTemplate, serverIPInput.Text, serverPortInput.Text, serverRenderDistInput.Text, gamemode, hardcore, Seed, MOTD));
+                    sw.Close();
+                }
+
+                File.WriteAllText(ServerFilePath + "fissionMSL.fmsl", ServerData);
                 LoadServers.RefreshList();
                 MainWindow.Instance.CloseServerSettings();
             }
@@ -82,8 +127,8 @@ namespace MinecraftServerLauncher.UserControls
         // Copies the IP and Port to the user's clipboard.
         private void CopyAddress_Button_Clicked(object sender, RoutedEventArgs e)
         {
-            var ip = serverIP.Text;
-            var port = serverPort.Text;
+            var ip = serverIPInput.Text;
+            var port = serverPortInput.Text;
             MainWindow.SetClipboard(ip + ":" + port);
         }
 

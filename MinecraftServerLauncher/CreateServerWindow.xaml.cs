@@ -1,11 +1,10 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-05-01 at 16:51
+// Last changed on 2025-05-17 at 00:29
 // Twenty-eight stab wounds!
 
 using System.ComponentModel;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System.IO;
-using System.IO.Compression;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -26,6 +25,7 @@ namespace MinecraftServerLauncher
         string JavaPath = string.Empty;
         string gamemode = "survival";
         string hardcore = "false";
+        string MOTD = @"\u00a77Hosted with\u00a74 Fission\u00a7fMSL";
 
         bool isImagePathFull = false;
 
@@ -191,7 +191,8 @@ namespace MinecraftServerLauncher
             e.Handled = !IsTextAllowed(serverSeedInput.Text + e.Text);
         }
 
-        private static readonly Regex _regex = new Regex(@"^-?\d*$"); //regex that matches disallowed text
+        // Regex that matches disallowed text.
+        private static readonly Regex _regex = new Regex(@"^-?\d*$");
         private static bool IsTextAllowed(string text)
         {
             return _regex.IsMatch(text);
@@ -283,21 +284,16 @@ namespace MinecraftServerLauncher
                             "\nname=" + serverNameInput.Text +
                             "\njar-path=" + ServerFilePath + "server.jar" +
                             "\nfile-path=" + ServerFilePath +
-                            "\njava-path=" + JavaPath +
                             "\nram-allocation=" + serverRamInput.Text +
-                            "\ntime=" + DateTime.UtcNow +
-                            "\nport=" + serverPortInput.Text +
-                            "\nipv4=" + serverIPInput.Text +
-                            "\ngamemode=" + gamemode +
-                            "\nhardcore=" + hardcore;
+                            "\ndate=never";
 
             File.WriteAllText(ServerFilePath + "eula.txt", "eula=true");
             using (var sw = File.CreateText(ServerFilePath + "server.properties"))
             {
-                sw.Write(string.Format(PropertiesTemplate, serverIPInput.Text, serverPortInput.Text, serverRenderDistInput.Text, gamemode, hardcore, serverSeedInput.Text));
+                sw.Write(string.Format(PropertiesTemplate, serverIPInput.Text, serverPortInput.Text, serverRenderDistInput.Text, gamemode, hardcore, serverSeedInput.Text, MOTD));
                 sw.Close();
             }
-            File.WriteAllText(ServerFilePath + "fissionMSL.data", ServerData);
+            File.WriteAllText(ServerFilePath + "fissionMSL.fmsl", ServerData);
 
             if (isImagePathFull)
             {
@@ -315,13 +311,13 @@ namespace MinecraftServerLauncher
                 if (File.Exists(_applicationDataPath + "ServerList.txt"))
                 {
                     pathLines = File.ReadAllLines(_applicationDataPath + "ServerList.txt").ToList();
-                    pathLines.Add(ServerFilePath + "fissionMSL.data");
+                    pathLines.Add(ServerFilePath + "fissionMSL.fmsl");
                     File.WriteAllLines(_applicationDataPath + "ServerList.txt", pathLines);
                 }
                 else
                 {
                     Directory.CreateDirectory(_applicationDataPath);
-                    File.WriteAllText(_applicationDataPath + "ServerList.txt", ServerFilePath + "fissionMSL.data");
+                    File.WriteAllText(_applicationDataPath + "ServerList.txt", ServerFilePath + "fissionMSL.fmsl");
                 }
             }
             catch
@@ -371,7 +367,7 @@ max-chained-neighbor-updates=1000000
 max-players=20
 max-tick-time=60000
 max-world-size=29999984
-motd=\u00a77Hosted with\u00a74 Fission\u00a7fMSL
+motd={6}
 network-compression-threshold=256
 online-mode=true
 op-permission-level=4

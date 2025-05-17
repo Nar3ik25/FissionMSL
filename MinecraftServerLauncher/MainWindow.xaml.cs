@@ -1,5 +1,5 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-05-11 at 17:41
+// Last changed on 2025-05-17 at 00:44
 // Don't you love when the errors solve themselves?
 
 using MinecraftServerLauncher.ViewModels;
@@ -27,7 +27,7 @@ namespace MinecraftServerLauncher
         public static readonly string ApplicationDataPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\FissionMSL\";
 
         // The application version number (Must be changed for each update!)
-        public static readonly Version InstalledVersion = new Version(0, 2, 2, 0);
+        public static readonly Version InstalledVersion = new Version(0, 3, 0, 0);
 
         // Java path for the application.
         public static string ApplicationJavaPath = null;
@@ -268,16 +268,21 @@ namespace MinecraftServerLauncher
         public void OpenServerSettings(ServerData serverData)
         {
             serverSettingsView.serverName.Text = serverData.ServerName;
-            serverSettingsView.serverIP.Text = serverData.ServerIP;
-            serverSettingsView.serverPort.Text = serverData.ServerPort;
+            serverSettingsView.serverIPInput.Text = serverData.ServerIP;
+            serverSettingsView.serverPortInput.Text = serverData.ServerPort;
+            serverSettingsView.serverRamInput.Text = serverData.ServerRam;
+            serverSettingsView.serverRenderDistInput.Text = serverData.ServerRenderDistance;
             serverSettingsView.ServerPath = serverData.ServerPath;
-            serverSettingsView.JavaPath = serverData.JavaPath;
             serverSettingsView.ServerFilePath = serverData.ServerFilePath;
+            serverSettingsView.Seed = serverData.ServerSeed;
+            serverSettingsView.MOTD = serverData.MOTD;
             serverSettingsView.gamemode = serverData.ServerGamemode;
             serverSettingsView.hardcore = serverData.ServerHardcore;
             serverSettingsView.serverPath.Text = serverData.ServerFilePath;
-            serverSettingsView.serverRamInput.Text = serverData.ServerRam;
             serverSettingsView.ramErrorText.Text = "";
+            serverSettingsView.IPErrorText.Text = "";
+            serverSettingsView.portErrorText.Text = "";
+            serverSettingsView.renderDistErrorText.Text = "";
             serverView.Visibility = Visibility.Hidden;
             serverSettingsView.Visibility = Visibility.Visible;
         }
@@ -291,14 +296,19 @@ namespace MinecraftServerLauncher
             ChangePanelVisibility(0);
         }
 
-        private void Updates_CatagoryButton_Clicked(object sender, RoutedEventArgs e)
+        private void Documents_CatagoryButton_Clicked(object sender, RoutedEventArgs e)
         {
             ChangePanelVisibility(1);
         }
 
-        private void Settings_CatagoryButton_Clicked(object sender, RoutedEventArgs e)
+        private void Updates_CatagoryButton_Clicked(object sender, RoutedEventArgs e)
         {
             ChangePanelVisibility(2);
+        }
+
+        private void Settings_CatagoryButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            ChangePanelVisibility(3);
         }
 
         private void ChangePanelVisibility(int id)
@@ -308,18 +318,28 @@ namespace MinecraftServerLauncher
                 case 0:
                     serverView.Visibility = Visibility.Visible;
                     serverSettingsView.Visibility = Visibility.Hidden;
+                    docView.Visibility = Visibility.Hidden;
                     updatesView.Visibility = Visibility.Hidden;
                     settingsView.Visibility = Visibility.Hidden;
                     break;
                 case 1:
                     serverView.Visibility = Visibility.Hidden;
                     serverSettingsView.Visibility = Visibility.Hidden;
-                    updatesView.Visibility = Visibility.Visible;
+                    docView.Visibility = Visibility.Visible;
+                    updatesView.Visibility = Visibility.Hidden;
                     settingsView.Visibility = Visibility.Hidden;
                     break;
                 case 2:
                     serverView.Visibility = Visibility.Hidden;
                     serverSettingsView.Visibility = Visibility.Hidden;
+                    docView.Visibility = Visibility.Hidden;
+                    updatesView.Visibility = Visibility.Visible;
+                    settingsView.Visibility = Visibility.Hidden;
+                    break;
+                case 3:
+                    serverView.Visibility = Visibility.Hidden;
+                    serverSettingsView.Visibility = Visibility.Hidden;
+                    docView.Visibility = Visibility.Hidden;
                     updatesView.Visibility = Visibility.Hidden;
                     settingsView.appServerPathInput.Text = ApplicationServerPath;
                     settingsView.appJavaPathInput.Text = ApplicationJavaPath;

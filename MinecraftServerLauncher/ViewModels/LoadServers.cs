@@ -1,5 +1,5 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-05-01 at 15:47
+// Last changed on 2025-05-16 at 23:22
 // Yippieeee!
 
 using System.Collections.ObjectModel;
@@ -20,16 +20,19 @@ namespace MinecraftServerLauncher.ViewModels
         public int ID { get; set; }
         public BitmapImage ServerIcon { get; set; }
         public string ServerName { get; set; }
+        public string MOTD {  get; set; }
         public string ServerVersion { get; set; }
         public string ServerPath { get; set; }
         public string ServerFilePath { get; set; }
-        public string JavaPath { get; set; }
-        public string ServerRam { get; set; }
         public string ServerPort { get; set; }
         public string ServerIP { get; set; }
+        public string ServerRam { get; set; }
+        public string ServerRenderDistance { get; set; }
+        public string ServerSeed { get; set; }
         public string ServerGamemode { get; set; }
         public bool ServerHardcore { get; set; }
-        public DateTime Date { get; set; }
+        public string LastRan { get; set; }
+        public DateTime LastUsedDate { get; set; }
 
         // Compound data
         public string ServerGamemodeFull { get; set; }
@@ -58,6 +61,24 @@ namespace MinecraftServerLauncher.ViewModels
             else
             {
                 ServerGamemodeFull = "Gamemode: Unknown";
+            }
+
+            if (LastUsedDate == DateTime.MinValue)
+            {
+                LastRan = "Last Started: Never";
+            }
+            else
+            {
+                DateTime when = LastUsedDate;
+                TimeSpan ts = DateTime.Now.Subtract(when);
+                if (ts.TotalHours < 1)
+                    LastRan = "Last Started: " + (int)ts.TotalMinutes + " minutes ago";
+                else if (ts.TotalDays < 1)
+                    LastRan = "Last Started: " + (int)ts.TotalHours + " hours ago";
+                else if (ts.TotalDays < 2)
+                    LastRan = "Last Started: Yesterday";
+                else
+                    LastRan = "Last Started: " + ts.TotalDays + " days ago";
             }
         }
     }
@@ -97,13 +118,15 @@ namespace MinecraftServerLauncher.ViewModels
                         var nameRegex = new Regex(@"(?:^|\W)name(?:$|\W)");
                         var pathRegex = new Regex(@"(?:^|\W)jar-(?:$|\W)");
                         var filePathRegex = new Regex(@"(?:^|\W)file(?:$|\W)");
-                        var javaPathRegex = new Regex(@"(?:^|\W)java(?:$|\W)");
-                        var dateRegex = new Regex(@"(?:^|\W)date(?:$|\W)");
                         var ramRegex = new Regex(@"(?:^|\W)ram-(?:$|\W)");
-                        var portRegex = new Regex(@"(?:^|\W)port(?:$|\W)");
-                        var ipRegex = new Regex(@"(?:^|\W)ipv4(?:$|\W)");
-                        var gamemodeRegex = new Regex(@"(?:^|\W)game(?:$|\W)");
-                        var hardcoreRegex = new Regex(@"(?:^|\W)hard(?:$|\W)");
+                        var dateRegex = new Regex(@"(?:^|\W)date(?:$|\W)");
+                        var seedRegex = new Regex(@"(?:^|\W)seed(?:$|\W)");
+                        var motdRegex = new Regex(@"(?:^|\W)motd(?:$|\W)");
+                        var portRegex = new Regex(@"(?:^|\W)server-p(?:$|\W)");
+                        var ipRegex = new Regex(@"(?:^|\W)server-i(?:$|\W)");
+                        var viewDistRegex = new Regex(@"(?:^|\W)view-dis(?:$|\W)");
+                        var gamemodeRegex = new Regex(@"(?:^|\W)gamemode(?:$|\W)");
+                        var hardcoreRegex = new Regex(@"(?:^|\W)hardcore(?:$|\W)");
                         // End of the sorting regexes
 
                         // Sorts through all of the lines in the 'FissionMSL.data' file
@@ -122,38 +145,21 @@ namespace MinecraftServerLauncher.ViewModels
                             {
                                 serverData.ServerFilePath = lines[i].Substring(lines[i].IndexOf('=') + 1);
                             }
-                            else if (javaPathRegex.IsMatch(firstFourChars0))
-                            {
-                                serverData.JavaPath = lines[i].Substring(lines[i].IndexOf('=') + 1);
-                            }
-                            else if (dateRegex.IsMatch(firstFourChars0))
-                            {
-                                var stringDate = lines[i].Substring(lines[i].IndexOf('=') + 1);
-                                serverData.Date = DateTime.Parse(stringDate);
-                            }
                             else if (ramRegex.IsMatch(firstFourChars0))
                             {
                                 serverData.ServerRam = lines[i].Substring(lines[i].IndexOf('=') + 1);
                             }
-                            else if (portRegex.IsMatch(firstFourChars0))
+                            else if (dateRegex.IsMatch(firstFourChars0))
                             {
-                                serverData.ServerPort = lines[i].Substring(lines[i].IndexOf('=') + 1);
-                            }
-                            else if (ipRegex.IsMatch(firstFourChars0))
-                            {
-                                serverData.ServerIP = lines[i].Substring(lines[i].IndexOf('=') + 1);
-                            }
-                            else if (gamemodeRegex.IsMatch(firstFourChars0))
-                            {
-                                serverData.ServerGamemode = lines[i].Substring(lines[i].IndexOf('=') + 1);
-                            }
-                            else if (hardcoreRegex.IsMatch(firstFourChars0))
-                            {
-                                var boolean = lines[i].Substring(lines[i].IndexOf('=') + 1);
-                                if (boolean == "true")
-                                    serverData.ServerHardcore = true;
+                                var stringDate = lines[i].Substring(lines[i].IndexOf('=') + 1);
+                                if (stringDate == "never")
+                                {
+                                    serverData.LastUsedDate = DateTime.MinValue;
+                                }
                                 else
-                                    serverData.ServerHardcore = false;
+                                {
+                                    serverData.LastUsedDate = DateTime.Parse(stringDate);
+                                }
                             }
                         }
 
@@ -161,7 +167,6 @@ namespace MinecraftServerLauncher.ViewModels
                         if (!Directory.Exists(serverData.ServerFilePath))
                         {
                             // If not valid, this server will be removed from the 'ServerList.txt' file
-
                             lostLines.Add(line);
                         }
                         else
@@ -177,6 +182,58 @@ namespace MinecraftServerLauncher.ViewModels
                             else
                             {
                                 serverData.ServerVersion = "Minecraft " + Path.GetFileNameWithoutExtension(version[0]);
+                            }
+
+                            // Looks at the server.properties file and gets the relevent data.
+                            if (File.Exists(serverData.ServerFilePath + "server.properties"))
+                            {
+                                string[] propertiesLines = File.ReadAllLines(serverData.ServerFilePath + "server.properties");
+
+                                for (int i = 0; i < propertiesLines.Length; i++)
+                                {
+                                    var firstEightChars = propertiesLines[i].Length <= 8 ? propertiesLines[i] : propertiesLines[i].Substring(0, 8);
+
+                                    if (ipRegex.IsMatch(firstEightChars))
+                                    {
+                                        serverData.ServerIP = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
+                                    }
+                                    else if (portRegex.IsMatch(firstEightChars))
+                                    {
+                                        serverData.ServerPort = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
+                                    }
+                                    else if (gamemodeRegex.IsMatch(firstEightChars))
+                                    {
+                                        serverData.ServerGamemode = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
+                                    }
+                                    else if (viewDistRegex.IsMatch(firstEightChars))
+                                    {
+                                        serverData.ServerRenderDistance = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
+                                    }
+                                    else if (hardcoreRegex.IsMatch(firstEightChars))
+                                    {
+                                        var boolean = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
+                                        if (boolean == "true")
+                                            serverData.ServerHardcore = true;
+                                        else
+                                            serverData.ServerHardcore = false;
+                                    }
+                                    else
+                                    {
+                                        var firstFourChars = propertiesLines[i].Length <= 4 ? propertiesLines[i] : propertiesLines[i].Substring(0, 4);
+
+                                        if (seedRegex.IsMatch(firstFourChars))
+                                        {
+                                            serverData.ServerSeed = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
+                                        }
+                                        else if (motdRegex.IsMatch(firstFourChars))
+                                        {
+                                            serverData.MOTD = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
+
+                                            if (string.IsNullOrEmpty(serverData.MOTD))
+                                                serverData.MOTD = @"\u00a77Hosted with\u00a74 Fission\u00a7fMSL";
+                                        }
+                                    }
+                                }
                             }
 
                             if (File.Exists(serverData.ServerFilePath + "server-icon.png"))

@@ -66,6 +66,6 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <TextBlock x:Name="noServerText" Text="You have no FissionMSL servers." FontSize="30" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock x:Name="noServerText" Text="You have no Fission MSL servers." FontSize="30" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
     </Grid>
 </UserControl>

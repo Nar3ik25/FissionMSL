@@ -1,5 +1,5 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-04-29 at 18:58
+// Last changed on 2025-05-17 at 01:14
 // First we mine, then we craft!
 
 using System.Windows.Controls;
@@ -82,62 +82,88 @@ namespace MinecraftServerLauncher.UserControls
 
         internal bool IsLessThan(Version _otherVersion)
         {
+            bool isTrue = false;
+
+            if (patch < _otherVersion.patch)
+            {
+                isTrue = true;
+            }
+            if (patch > _otherVersion.patch)
+            {
+                isTrue = false;
+            }
+
+            if (minor < _otherVersion.minor)
+            {
+                isTrue = true;
+            }
+            if (minor > _otherVersion.minor)
+            {
+                isTrue = false;
+            }
+
+            if (major < _otherVersion.major)
+            {
+                isTrue = true;
+            }
+            if (major > _otherVersion.major)
+            {
+                isTrue = false;
+            }
+
             if (release < _otherVersion.release)
             {
-                return true;
+                isTrue = true;
             }
-            else
+            if (release > _otherVersion.release)
             {
-                if (major < _otherVersion.major)
-                {
-                    return true;
-                }
-                else
-                {
-                    if (minor < _otherVersion.minor)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        if (patch < _otherVersion.patch)
-                        {
-                            return true;
-                        }
-                    }
-                }
+                isTrue = false;
             }
-            return false;
+
+            return isTrue;
         }
 
         internal bool IsGreaterThan(Version _otherVersion)
         {
+            bool isTrue = false;
+
+            if (patch > _otherVersion.patch)
+            {
+                isTrue = true;
+            }
+            if (patch < _otherVersion.patch)
+            {
+                isTrue = false;
+            }
+
+            if (minor > _otherVersion.minor)
+            {
+                isTrue = true;
+            }
+            if (minor < _otherVersion.minor)
+            {
+                isTrue = false;
+            }
+
+            if (major > _otherVersion.major)
+            {
+                isTrue = true;
+            }
+            if (major < _otherVersion.major)
+            {
+                isTrue = false;
+            }
+
             if (release > _otherVersion.release)
             {
-                return true;
+                isTrue = true;
             }
-            else
+            if (release < _otherVersion.release)
             {
-                if (major > _otherVersion.major)
-                {
-                    return true;
-                }
-                else
-                {
-                    if (minor > _otherVersion.minor)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        if (patch > _otherVersion.patch)
-                        {
-                            return true;
-                        }
-                    }
-                }
+                isTrue = false;
             }
-            return false;
+
+            return isTrue;
         }
 
         public override string ToString()

@@ -28,6 +28,7 @@
 		<Resource Include="Dictionaries\Icon.png" />
 		<Resource Include="Dictionaries\GearIcon.png" />
 		<Resource Include="Dictionaries\HomeIcon.png" />
+		<Resource Include="Dictionaries\QuestionIcon1.png" />
 		<Resource Include="Dictionaries\ServerIcon1.png" />
 		<Resource Include="Dictionaries\UpdateIcon1.png" />
 		<Resource Include="Dictionaries\CommandsIcon1.png" />

@@ -18,6 +18,10 @@
             </StackPanel>
 
             <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="5,8,0,0">
+                <Rectangle Width="50" Height="2" Margin="0,5,0,5" Fill="{StaticResource Launcher.Window.GrayBrush5}"/>
+                <Button Width="50" Height="50" Margin="0,5,0,5" Style="{StaticResource CatagoryButtons}" Click="Documents_CatagoryButton_Clicked">
+                    <Image Source="/Dictionaries/QuestionIcon1.png" Stretch="Uniform"/>
+                </Button>
                 <Button Width="50" Height="50" Margin="0,5,0,5" Style="{StaticResource CatagoryButtons}" Click="Updates_CatagoryButton_Clicked">
                     <Image Source="/Dictionaries/UpdateIcon1.png" Stretch="Uniform"/>
                 </Button>
@@ -30,6 +34,7 @@
                 <Grid>
                     <view:ServerView x:Name="serverView"/>
                     <view:ServerSettingsView x:Name="serverSettingsView" Visibility="Hidden"/>
+                    <view:DocumentationView x:Name="docView" Visibility="Hidden"/>
                     <view:UpdatesView x:Name="updatesView" Visibility="Hidden"/>
                     <view:SettingsView x:Name="settingsView" Visibility="Hidden"/>
                 </Grid>
