@@ -27,7 +27,7 @@ namespace MinecraftServerLauncher
         public static readonly string ApplicationDataPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\FissionMSL\";
 
         // The application version number (Must be changed for each update!)
-        public static readonly Version InstalledVersion = new Version(0, 3, 2, 0);
+        public static readonly Version InstalledVersion = new Version(0, 3, 2, 1);
 
         // Java path for the application.
         public static string ApplicationJavaPath = null;
@@ -501,7 +501,8 @@ namespace MinecraftServerLauncher
                     }
                     catch
                     {
-                        // TODO: Not really sure if anything needs to be here.
+                        // If the try went wrong, the thread should probably be stopped.
+                        counterThreadRunning = false;
                     }
                 }
                 Thread.Sleep(1000);
