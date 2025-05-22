@@ -1,5 +1,5 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-05-17 at 05:31
+// Last changed on 2025-05-22 at 13:35
 // Yippieeee!
 
 using System.Collections.ObjectModel;
@@ -71,14 +71,20 @@ namespace MinecraftServerLauncher.ViewModels
             {
                 DateTime when = LastUsedDate;
                 TimeSpan ts = DateTime.Now.Subtract(when);
-                if (ts.TotalHours < 1)
+                if (ts.TotalMinutes < 1)
+                    LastRan = "Last Started: Just now";
+                else if (ts.TotalMinutes < 2)
+                    LastRan = "Last Started: 1 minute ago";
+                else if (ts.TotalHours < 1)
                     LastRan = "Last Started: " + (int)ts.TotalMinutes + " minutes ago";
+                else if (ts.TotalHours < 2)
+                    LastRan = "Last Started: 1 hour ago";
                 else if (ts.TotalDays < 1)
                     LastRan = "Last Started: " + (int)ts.TotalHours + " hours ago";
                 else if (ts.TotalDays < 2)
                     LastRan = "Last Started: Yesterday";
                 else
-                    LastRan = "Last Started: " + ts.TotalDays + " days ago";
+                    LastRan = "Last Started: " + (int)ts.TotalDays + " days ago";
             }
         }
     }

@@ -1,5 +1,5 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-05-17 at 05:31
+// Last changed on 2025-05-22 at 13:40
 // Don't you love when the errors solve themselves?
 
 using MinecraftServerLauncher.ViewModels;
@@ -27,7 +27,7 @@ namespace MinecraftServerLauncher
         public static readonly string ApplicationDataPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\FissionMSL\";
 
         // The application version number (Must be changed for each update!)
-        public static readonly Version InstalledVersion = new Version(0, 3, 1, 0);
+        public static readonly Version InstalledVersion = new Version(0, 3, 2, 0);
 
         // Java path for the application.
         public static string ApplicationJavaPath = null;
@@ -38,9 +38,12 @@ namespace MinecraftServerLauncher
         // Singleton instance of MainWindow
         public static MainWindow Instance { get; private set; }
 
+        // View Refresh thread
+        public Thread counterThread;
 
         public bool pendingUpdate = false;
 
+        private bool counterThreadRunning = false;
         private int attempts = 0;
         private bool closePressedWhileStopping = false;
 
@@ -55,6 +58,9 @@ namespace MinecraftServerLauncher
         private void OnMainWindowLoaded(object sender, RoutedEventArgs e)
         {
             CheckPaths();
+            counterThread = new Thread(new ThreadStart(CheckRefresh));
+            counterThreadRunning = true;
+            counterThread.Start();
         }
 
         // Verifies that all of the application paths are not null, and sets them if they are.
@@ -197,6 +203,8 @@ namespace MinecraftServerLauncher
                     return;
                 }
             }
+
+            counterThreadRunning = false;
         }
 
         // Closes the server settings panel.
@@ -224,6 +232,8 @@ namespace MinecraftServerLauncher
                 await Task.Run(() => WaitForServerStop());
 
                 MainPanel.Visibility = Visibility.Visible;
+                if (serverView.Visibility == Visibility.Visible)
+                    serverView.RefreshList();
                 ConsolePanel.Visibility = Visibility.Hidden;
             }
             else
@@ -235,9 +245,9 @@ namespace MinecraftServerLauncher
         #region ListBoxItem Button Functions
 
         // Starts the server specified by the inputs.
-        public async void StartServer(string serverPath, int serverRam, string serverName)
+        public async void StartServer(ServerData serverData)
         {
-            if (File.Exists(serverPath) && ApplicationJavaPath != null)
+            if (File.Exists(serverData.ServerPath) && ApplicationJavaPath != null)
             {
                 if (consoleControl.IsProcessRunning)
                     consoleControl.StopProcess();
@@ -247,9 +257,18 @@ namespace MinecraftServerLauncher
                 consoleInputBox.IsEnabled = true;
 
                 stopButton.IsEnabled = true;
-                serverNameText.Text = serverName;
+                serverNameText.Text = serverData.ServerName;
 
-                await Task.Run(() => WaitForServerStart(serverPath, serverRam));
+                string newServerData = "#FissionMSL data file" +
+                                    "\nname=" + serverData.ServerName +
+                                    "\njar-path=" + serverData.ServerPath +
+                                    "\nfile-path=" + serverData.ServerFilePath +
+                                    "\nram-allocation=" + serverData.ServerRam +
+                                    "\ndate=" + DateTime.Now;
+
+                File.WriteAllText(serverData.ServerFilePath + serverData.ServerName + ".fmsl", newServerData);
+
+                await Task.Run(() => WaitForServerStart(serverData.ServerPath, int.Parse(serverData.ServerRam)));
 
                 MainPanel.Visibility = Visibility.Hidden;
                 ConsolePanel.Visibility = Visibility.Visible;
@@ -311,6 +330,7 @@ namespace MinecraftServerLauncher
             switch (id)
             {
                 case 0:
+                    serverView.RefreshList();
                     serverView.Visibility = Visibility.Visible;
                     serverSettingsView.Visibility = Visibility.Hidden;
                     updatesView.Visibility = Visibility.Hidden;
@@ -347,6 +367,8 @@ namespace MinecraftServerLauncher
             await Task.Run(() => WaitForServerStop());
 
             MainPanel.Visibility = Visibility.Visible;
+            if (serverView.Visibility == Visibility.Visible)
+                serverView.RefreshList();
             ConsolePanel.Visibility = Visibility.Hidden;
         }
 
@@ -373,6 +395,8 @@ namespace MinecraftServerLauncher
                     await Task.Run(() => WaitForServerStop());
 
                     MainPanel.Visibility = Visibility.Visible;
+                    if (serverView.Visibility == Visibility.Visible)
+                        serverView.RefreshList();
                     ConsolePanel.Visibility = Visibility.Hidden;
                 }
                 else
@@ -450,6 +474,37 @@ namespace MinecraftServerLauncher
                     Close();
                 };
                 Dispatcher.BeginInvoke(close);
+            }
+        }
+
+        // This will refresh the server view every minute, as long as the server view is visible.
+        private void CheckRefresh()
+        {
+            int seconds = 0;
+
+            while (counterThreadRunning)
+            {
+                seconds++;
+                if (seconds == 60)
+                {
+                    seconds = 0;
+                    try
+                    {
+                        Action ac = () =>
+                        {
+                            if (serverView.Visibility == Visibility.Visible && ConsolePanel.Visibility != Visibility.Visible)
+                            {
+                                serverView.RefreshList();
+                            }
+                        };
+                        Dispatcher.BeginInvoke(ac);
+                    }
+                    catch
+                    {
+                        // TODO: Not really sure if anything needs to be here.
+                    }
+                }
+                Thread.Sleep(1000);
             }
         }
 

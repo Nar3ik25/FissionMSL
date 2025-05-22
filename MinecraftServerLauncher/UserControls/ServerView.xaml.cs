@@ -1,5 +1,5 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-04-27 at 22:42
+// Last changed on 2025-05-22 at 13:13
 // Detecting multiple leviathan class lifeforms in the region. Are you certain whatever you're doing is worth it?
 
 using System.Windows;
@@ -68,7 +68,7 @@ namespace MinecraftServerLauncher.UserControls
 
             int ram = Int32.Parse(LoadServers.Servers[serversListBox.SelectedIndex].ServerRam);
             string name = LoadServers.Servers[serversListBox.SelectedIndex].ServerName;
-            MainWindow.Instance.StartServer(LoadServers.Servers[serversListBox.SelectedIndex].ServerPath, ram, name);
+            MainWindow.Instance.StartServer(LoadServers.Servers[serversListBox.SelectedIndex]);
         }
 
         // Opens the settings panel for the server this button belongs to.

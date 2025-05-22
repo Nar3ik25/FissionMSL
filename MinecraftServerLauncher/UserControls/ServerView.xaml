@@ -48,9 +48,11 @@
                             <StackPanel Orientation="Vertical">
                                 <TextBlock x:Name="serverName" Text="{Binding ServerName}" Margin="5,5,5,0" FontSize="25" VerticalAlignment="Top"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock x:Name="serverVersion" Text="{Binding ServerVersion}" Margin="5,0,10,5" FontSize="15" VerticalAlignment="Bottom"/>
+                                    <TextBlock x:Name="serverLastUsed" Text="{Binding LastRan}" Margin="5,0,5,5" FontSize="15" VerticalAlignment="Bottom"/>
                                     <Rectangle Margin="2" Fill="{StaticResource Launcher.Window.GrayBrush6}" Width="2"/>
-                                    <TextBlock x:Name="serverGamemode" Text="{Binding ServerGamemodeFull}" Margin="10,0,5,5" FontSize="15" VerticalAlignment="Bottom"/>
+                                    <TextBlock x:Name="serverVersion" Text="{Binding ServerVersion}" Margin="5,0,5,5" FontSize="15" VerticalAlignment="Bottom"/>
+                                    <Rectangle Margin="2" Fill="{StaticResource Launcher.Window.GrayBrush6}" Width="2"/>
+                                    <TextBlock x:Name="serverGamemode" Text="{Binding ServerGamemodeFull}" Margin="5,0,5,5" FontSize="15" VerticalAlignment="Bottom"/>
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
