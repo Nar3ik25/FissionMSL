@@ -1,5 +1,5 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-05-22 at 13:13
+// Last changed on 2025-05-23 at 22:16
 // Detecting multiple leviathan class lifeforms in the region. Are you certain whatever you're doing is worth it?
 
 using System.Windows;
@@ -100,6 +100,17 @@ namespace MinecraftServerLauncher.UserControls
             CreateServerWindow createServerWindow = new CreateServerWindow();
             createServerWindow.Owner = MainWindow.Instance;
             if (createServerWindow.ShowDialog() == true)
+            {
+            }
+            RefreshList();
+        }
+
+        // Opens the server importer dialog.
+        private void ImportServer_Button_Clicked(object sender, RoutedEventArgs e)
+        {
+            ImportServerWindow importServerWindow = new ImportServerWindow();
+            importServerWindow.Owner = MainWindow.Instance;
+            if (importServerWindow.ShowDialog() == true)
             {
             }
             RefreshList();

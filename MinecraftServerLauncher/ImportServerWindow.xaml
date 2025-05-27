@@ -1,0 +1,41 @@
+﻿<Window x:Class="MinecraftServerLauncher.ImportServerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MinecraftServerLauncher"
+        mc:Ignorable="d" Style="{StaticResource LauncherDialogStyle}" WindowStartupLocation="CenterOwner"
+        Title="Import Server" MinHeight="410" MinWidth="500" Height="410" Width="500">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Border Margin="5" Background="{StaticResource Launcher.Window.GrayBrush4}" BorderThickness="4" CornerRadius="10" BorderBrush="{StaticResource Launcher.Window.GrayBrush6}">
+            <Grid>
+                <TextBlock Text="Server Name" FontSize="20" Margin="10,5,10,5" VerticalAlignment="Top"/>
+                <TextBox x:Name="serverNameInput" Margin="10,5,10,5" Height="40" Text="Minecraft Server" FontSize="20" VerticalAlignment="Bottom" HorizontalAlignment="Stretch"/>
+            </Grid>
+        </Border>
+        <Border Grid.Row="1" Margin="5" Background="{StaticResource Launcher.Window.GrayBrush4}" BorderThickness="4" CornerRadius="10" BorderBrush="{StaticResource Launcher.Window.GrayBrush6}">
+            <Grid>
+                <TextBlock Text="Server Jar Path" FontSize="20" Margin="10,5,10,5" VerticalAlignment="Top"/>
+                <Button x:Name="browseButton" Content="Browse" Width="100" Margin="10,5,10,5" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="15" Style="{StaticResource NormalButton}"/>
+                <TextBox x:Name="serverPathInput" Margin="10,5,10,5" Height="40" Text="" FontSize="20" VerticalAlignment="Bottom" MaxLength="20" HorizontalAlignment="Stretch"/>
+            </Grid>
+        </Border>
+        <Border Grid.Row="2" Margin="5" Background="{StaticResource Launcher.Window.GrayBrush4}" BorderThickness="4" CornerRadius="10" BorderBrush="{StaticResource Launcher.Window.GrayBrush6}">
+            <Grid>
+                <TextBlock Text="RAM Allocation (GB)" FontSize="20" Margin="10,5,10,5" VerticalAlignment="Top"/>
+                <TextBlock Text="4 to 8 GB is recommended." TextWrapping="Wrap" FontSize="14" FontStyle="Italic" Margin="10,10,10,5" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                <TextBox x:Name="serverRamInput" Margin="10,5,10,5" Height="40" Text="4" FontSize="20" VerticalAlignment="Bottom" MaxLength="20" HorizontalAlignment="Stretch"/>
+            </Grid>
+        </Border>
+        <Button x:Name="cancelButton" Grid.Row="3" Content="Cancel" Width="140" Margin="40,0" HorizontalAlignment="Left" FontSize="20" Style="{StaticResource NormalButton}" Click="Cancel_Button_Clicked"/>
+        <Button x:Name="createButton" Grid.Row="3" Content="Import Server" Width="140" Margin="40,0" HorizontalAlignment="Right" FontSize="20" Style="{StaticResource NormalButton}"/>
+        <TextBlock x:Name="errorText" Text="" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Foreground="{StaticResource Launcher.RedBrush}" Grid.Row="5"/>
+    </Grid>
+</Window>
