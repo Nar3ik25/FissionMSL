@@ -1,5 +1,5 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-05-17 at 05:35
+// Last changed on 2025-08-15 at 16:35
 // Twenty-eight stab wounds!
 
 using System.ComponentModel;
@@ -234,27 +234,31 @@ namespace MinecraftServerLauncher
                 Directory.CreateDirectory(ServerFilePath);
                 switch (versionListBox.SelectedIndex)
                 {
-                    case 0: // 1.21.5
+                    case 0: // 1.21.8
+                        File.WriteAllText(ServerFilePath + "1.21.8.version", "1.21.8");
+                        webClient.DownloadFileAsync(new Uri("https://piston-data.mojang.com/v1/objects/6bce4ef400e4efaa63a13d5e6f6b500be969ef81/server.jar"), ServerFilePath + "server.jar");
+                        break;
+                    case 1: // 1.21.5
                         File.WriteAllText(ServerFilePath + "1.21.5.version", "1.21.5");
                         webClient.DownloadFileAsync(new Uri("https://piston-data.mojang.com/v1/objects/e6ec2f64e6080b9b5d9b471b291c33cc7f509733/server.jar"), ServerFilePath + "server.jar");
                         break;
-                    case 1: // 1.16.5
+                    case 2: // 1.16.5
                         File.WriteAllText(ServerFilePath + "1.16.5.version", "1.16.5");
                         webClient.DownloadFileAsync(new Uri("https://piston-data.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar"), ServerFilePath + "server.jar");
                         break;
-                    case 2: // 1.12.2
+                    case 3: // 1.12.2
                         File.WriteAllText(ServerFilePath + "1.12.2.version", "1.12.2");
                         webClient.DownloadFileAsync(new Uri("https://piston-data.mojang.com/v1/objects/886945bfb2b978778c3a0288fd7fab09d315b25f/server.jar"), ServerFilePath + "server.jar");
                         break;
-                    case 3: // 1.8.9
+                    case 4: // 1.8.9
                         File.WriteAllText(ServerFilePath + "1.8.9.version", "1.8.9");
                         webClient.DownloadFileAsync(new Uri("https://piston-data.mojang.com/v1/objects/b58b2ceb36e01bcd8dbf49c8fb66c55a9f0676cd/server.jar"), ServerFilePath + "server.jar");
                         break;
-                    case 4: // 1.7.10
+                    case 5: // 1.7.10
                         File.WriteAllText(ServerFilePath + "1.7.10.version", "1.7.10");
                         webClient.DownloadFileAsync(new Uri("https://piston-data.mojang.com/v1/objects/952438ac4e01b4d115c5fc38f891710c4941df29/server.jar"), ServerFilePath + "server.jar");
                         break;
-                    case 5: // 1.0.0
+                    case 6: // 1.0.0
                         File.WriteAllText(ServerFilePath + "1.0.0.version", "1.0.0");
                         webClient.DownloadFileAsync(new Uri("https://files.betacraft.uk/server-archive/release/1.0/1.0.0.jar"), ServerFilePath + "server.jar");
                         break;

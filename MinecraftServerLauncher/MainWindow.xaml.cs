@@ -1,5 +1,5 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-05-27 at 00:22
+// Last changed on 2025-08-15 at 16:16
 // Don't you love when the errors solve themselves?
 
 using MinecraftServerLauncher.ViewModels;
@@ -27,7 +27,7 @@ namespace MinecraftServerLauncher
         public static readonly string ApplicationDataPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\FissionMSL\";
 
         // The application version number (Must be changed for each update!)
-        public static readonly Version InstalledVersion = new Version(0, 3, 2, 2);
+        public static readonly Version InstalledVersion = new Version(0, 3, 3, 0);
 
         // Java path for the application.
         public static string ApplicationJavaPath = null;
