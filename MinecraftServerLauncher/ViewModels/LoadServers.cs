@@ -1,5 +1,5 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-05-22 at 13:35
+// Last changed on 2025-08-22 at 20:36
 // Yippieeee!
 
 using System.Collections.ObjectModel;
@@ -183,7 +183,7 @@ namespace MinecraftServerLauncher.ViewModels
 
                                 string[] version = Directory.GetFiles(serverData.ServerFilePath, "*.version");
 
-                                if (version[0] == null)
+                                if (version.Length == 0)
                                 {
                                     serverData.ServerVersion = "Unknown Version";
                                 }

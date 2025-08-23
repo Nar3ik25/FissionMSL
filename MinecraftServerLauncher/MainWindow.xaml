@@ -21,7 +21,10 @@
             <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="5,8,0,0">
                 <Rectangle Width="50" Height="2" Margin="0,5,0,5" Fill="{StaticResource Launcher.Window.GrayBrush5}"/>
                 <Button Width="50" Height="50" Margin="0,5,0,5" Style="{StaticResource CatagoryButtons}" Click="Updates_CatagoryButton_Clicked">
-                    <Image Source="/Dictionaries/UpdateIcon1.png" Stretch="Uniform"/>
+                    <Grid>
+                        <Ellipse Visibility="Hidden" x:Name="updateNotifier" Fill="{StaticResource Launcher.RedBrush}" Width="10" Height="10" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                        <Image Source="/Dictionaries/UpdateIcon1.png" Stretch="Uniform"/>
+                    </Grid>
                 </Button>
                 <Button Width="50" Height="50" Margin="0,5,0,5" Style="{StaticResource CatagoryButtons}" Click="Settings_CatagoryButton_Clicked">
                     <Image Source="/Dictionaries/GearIcon.png" Stretch="Uniform"/>

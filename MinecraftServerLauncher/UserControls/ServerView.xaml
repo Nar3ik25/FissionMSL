@@ -24,9 +24,8 @@
         <Grid>
             <TextBlock Text="Server List" FontSize="25" Margin="5,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
             <Button Content="Create Server" Width="150" FontSize="20" Margin="0,0,5,0" Style="{StaticResource NormalButton}" HorizontalAlignment="Right" Click="AddServer_Button_Clicked"/>
-            <!-- TODO: <Button Content="Import Server" Width="150" FontSize="20" Margin="0,0,165,0" Style="{StaticResource NormalButton}" HorizontalAlignment="Right" Click="ImportServer_Button_Clicked"/> -->
-            <!-- The refresh list button needs to have a right side margin of 325 once the import server button is implemented -->
-            <Button Content="Refresh List" Width="150" FontSize="20" Margin="0,0,165,0" Style="{StaticResource NormalButton}" HorizontalAlignment="Right" Click="RefreshList_Button_Clicked"/>
+            <Button Content="Import Server" Width="150" FontSize="20" Margin="0,0,165,0" Style="{StaticResource NormalButton}" HorizontalAlignment="Right" Click="ImportServer_Button_Clicked"/>
+            <Button Content="Refresh List" Width="150" FontSize="20" Margin="0,0,325,0" Style="{StaticResource NormalButton}" HorizontalAlignment="Right" Click="RefreshList_Button_Clicked"/>
         </Grid>
 
         <ListView x:Name="serversListBox" ItemsSource="{Binding Servers}" SelectedIndex="0" Grid.Row="1" Margin="5" Padding="7">

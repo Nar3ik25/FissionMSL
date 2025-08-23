@@ -1,5 +1,5 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-05-17 at 01:14
+// Last changed on 2025-08-15 at 17:24
 // First we mine, then we craft!
 
 using System.Windows.Controls;
@@ -202,7 +202,7 @@ namespace MinecraftServerLauncher.UserControls
         {
             if (MainWindow.Instance.pendingUpdate != true)
             {
-                topText.Text = "Downloading update...";
+                topText.Text = "Downloading update, please wait...";
                 updateButton.IsEnabled = false;
                 WebClient webClient = new WebClient();
                 webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadCompletedCallback);
@@ -234,7 +234,7 @@ namespace MinecraftServerLauncher.UserControls
         // Download completed callback.
         private void DownloadCompletedCallback(object sender, AsyncCompletedEventArgs e)
         {
-            topText.Text = "Close to install update.";
+            topText.Text = "Close to finish update.";
             progressBar.Value = 100;
             MainWindow.Instance.pendingUpdate = true;
             updateButton.Content = "Restart";
@@ -260,11 +260,13 @@ namespace MinecraftServerLauncher.UserControls
         {
             if (isOutOfDate)
             {
+                MainWindow.Instance.updateNotifier.Visibility = Visibility.Visible;
                 topText.Text = "New update available!";
                 updateButton.IsEnabled = true;
             }
             else
             {
+                MainWindow.Instance.updateNotifier.Visibility = Visibility.Hidden;
                 topText.Text = "No updates found.";
             }
         }
