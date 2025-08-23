@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MinecraftServerLauncher"
         mc:Ignorable="d" Style="{StaticResource LauncherDialogStyle}" WindowStartupLocation="CenterOwner"
-        Title="Create Server" MinHeight="610" MinWidth="600" Height="610" Width="600">
+        Title="Create Server" MinHeight="610" MinWidth="620" Height="610" Width="620">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
@@ -30,8 +30,8 @@
         <Border Padding="7" Grid.Row="2" Margin="5" Background="{StaticResource Launcher.Window.GrayBrush4}" BorderThickness="4" CornerRadius="10" BorderBrush="{StaticResource Launcher.Window.GrayBrush6}">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="170"/>
-                    <ColumnDefinition Width="170"/>
+                    <ColumnDefinition Width="190"/>
+                    <ColumnDefinition Width="180"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 
@@ -42,6 +42,9 @@
                     </ListBoxItem>
                     <ListBoxItem>
                         <TextBlock Text="Minecraft 1.21.5" FontSize="17"/>
+                    </ListBoxItem>
+                    <ListBoxItem>
+                        <TextBlock Text="Minecraft 1.19.4" FontSize="17"/>
                     </ListBoxItem>
                     <ListBoxItem>
                         <TextBlock Text="Minecraft 1.16.5" FontSize="17"/>

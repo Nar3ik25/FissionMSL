@@ -1,5 +1,5 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-05-17 at 05:36
+// Last changed on 2025-08-23 at 03:04
 // 1..2..3..4.. what comes after 4?
 
 using System.Diagnostics;
@@ -103,6 +103,18 @@ namespace MinecraftServerLauncher.UserControls
                     sDate = date.ToString();
                 }
 
+                string commands = "false";
+                if (serverCommandBlockToggle.IsChecked == true)
+                {
+                    commands = "true";
+                }
+
+                string pvp = "false";
+                if (serverPvPToggle.IsChecked == true)
+                {
+                    pvp = "true";
+                }
+
                 string ServerData = "#FissionMSL data file" +
                                     "\nname=" + serverName.Text +
                                     "\njar-path=" + ServerPath +
@@ -112,7 +124,7 @@ namespace MinecraftServerLauncher.UserControls
 
                 using (var sw = File.CreateText(ServerFilePath + "server.properties"))
                 {
-                    sw.Write(string.Format(CreateServerWindow.PropertiesTemplate, serverIPInput.Text, serverPortInput.Text, serverRenderDistInput.Text, gamemode, hardcore, Seed, MOTD));
+                    sw.Write(string.Format(CreateServerWindow.PropertiesTemplate, serverIPInput.Text, serverPortInput.Text, serverRenderDistInput.Text, gamemode, hardcore, Seed, MOTD, pvp, commands));
                     sw.Close();
                 }
 

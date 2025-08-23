@@ -1,5 +1,5 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-08-22 at 20:36
+// Last changed on 2025-08-23 at 03:05
 // Yippieeee!
 
 using System.Collections.ObjectModel;
@@ -27,6 +27,8 @@ namespace MinecraftServerLauncher.ViewModels
         public string ServerPort { get; set; }
         public string ServerIP { get; set; }
         public string ServerRam { get; set; }
+        public bool ServerPvP { get; set; }
+        public bool ServerCommandBlock { get; set; }
         public string ServerRenderDistance { get; set; }
         public string ServerSeed { get; set; }
         public string ServerGamemode { get; set; }
@@ -130,11 +132,13 @@ namespace MinecraftServerLauncher.ViewModels
                             var dateRegex = new Regex(@"(?:^|\W)date(?:$|\W)");
                             var seedRegex = new Regex(@"(?:^|\W)seed(?:$|\W)");
                             var motdRegex = new Regex(@"(?:^|\W)motd(?:$|\W)");
+                            var pvpRegex = new Regex(@"(?:^|\W)pvp=(?:$|\W)");
                             var portRegex = new Regex(@"(?:^|\W)server-p(?:$|\W)");
                             var ipRegex = new Regex(@"(?:^|\W)server-i(?:$|\W)");
                             var viewDistRegex = new Regex(@"(?:^|\W)view-dis(?:$|\W)");
                             var gamemodeRegex = new Regex(@"(?:^|\W)gamemode(?:$|\W)");
                             var hardcoreRegex = new Regex(@"(?:^|\W)hardcore(?:$|\W)");
+                            var commandBlockRegex = new Regex(@"(?:^|\W)enable-c(?:$|\W)");
                             // End of the sorting regexes
 
                             // Sorts through all of the lines in the 'FissionMSL.data' file
@@ -217,6 +221,14 @@ namespace MinecraftServerLauncher.ViewModels
                                         {
                                             serverData.ServerRenderDistance = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
                                         }
+                                        else if (commandBlockRegex.IsMatch(firstEightChars))
+                                        {
+                                            var boolean = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
+                                            if (boolean == "true")
+                                                serverData.ServerCommandBlock = true;
+                                            else
+                                                serverData.ServerCommandBlock = false;
+                                        }
                                         else if (hardcoreRegex.IsMatch(firstEightChars))
                                         {
                                             var boolean = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
@@ -232,6 +244,14 @@ namespace MinecraftServerLauncher.ViewModels
                                             if (seedRegex.IsMatch(firstFourChars))
                                             {
                                                 serverData.ServerSeed = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
+                                            }
+                                            else if (pvpRegex.IsMatch(firstFourChars))
+                                            {
+                                                var boolean = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
+                                                if (boolean == "true")
+                                                    serverData.ServerPvP = true;
+                                                else
+                                                    serverData.ServerPvP = false;
                                             }
                                             else if (motdRegex.IsMatch(firstFourChars))
                                             {

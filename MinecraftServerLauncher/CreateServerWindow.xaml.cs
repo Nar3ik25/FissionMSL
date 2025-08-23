@@ -1,5 +1,5 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-08-15 at 16:35
+// Last changed on 2025-08-23 at 03:04
 // Twenty-eight stab wounds!
 
 using System.ComponentModel;
@@ -242,23 +242,27 @@ namespace MinecraftServerLauncher
                         File.WriteAllText(ServerFilePath + "1.21.5.version", "1.21.5");
                         webClient.DownloadFileAsync(new Uri("https://piston-data.mojang.com/v1/objects/e6ec2f64e6080b9b5d9b471b291c33cc7f509733/server.jar"), ServerFilePath + "server.jar");
                         break;
-                    case 2: // 1.16.5
+                    case 2: // 1.19.4
+                        File.WriteAllText(ServerFilePath + "1.19.4.version", "1.19.4");
+                        webClient.DownloadFileAsync(new Uri("https://piston-data.mojang.com/v1/objects/8f3112a1049751cc472ec13e397eade5336ca7ae/server.jar"), ServerFilePath + "server.jar");
+                        break;
+                    case 3: // 1.16.5
                         File.WriteAllText(ServerFilePath + "1.16.5.version", "1.16.5");
                         webClient.DownloadFileAsync(new Uri("https://piston-data.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar"), ServerFilePath + "server.jar");
                         break;
-                    case 3: // 1.12.2
+                    case 4: // 1.12.2
                         File.WriteAllText(ServerFilePath + "1.12.2.version", "1.12.2");
                         webClient.DownloadFileAsync(new Uri("https://piston-data.mojang.com/v1/objects/886945bfb2b978778c3a0288fd7fab09d315b25f/server.jar"), ServerFilePath + "server.jar");
                         break;
-                    case 4: // 1.8.9
+                    case 5: // 1.8.9
                         File.WriteAllText(ServerFilePath + "1.8.9.version", "1.8.9");
                         webClient.DownloadFileAsync(new Uri("https://piston-data.mojang.com/v1/objects/b58b2ceb36e01bcd8dbf49c8fb66c55a9f0676cd/server.jar"), ServerFilePath + "server.jar");
                         break;
-                    case 5: // 1.7.10
+                    case 6: // 1.7.10
                         File.WriteAllText(ServerFilePath + "1.7.10.version", "1.7.10");
                         webClient.DownloadFileAsync(new Uri("https://piston-data.mojang.com/v1/objects/952438ac4e01b4d115c5fc38f891710c4941df29/server.jar"), ServerFilePath + "server.jar");
                         break;
-                    case 6: // 1.0.0
+                    case 7: // 1.0.0
                         File.WriteAllText(ServerFilePath + "1.0.0.version", "1.0.0");
                         webClient.DownloadFileAsync(new Uri("https://files.betacraft.uk/server-archive/release/1.0/1.0.0.jar"), ServerFilePath + "server.jar");
                         break;
@@ -294,7 +298,7 @@ namespace MinecraftServerLauncher
             File.WriteAllText(ServerFilePath + "eula.txt", "eula=true");
             using (var sw = File.CreateText(ServerFilePath + "server.properties"))
             {
-                sw.Write(string.Format(PropertiesTemplate, serverIPInput.Text, serverPortInput.Text, serverRenderDistInput.Text, gamemode, hardcore, serverSeedInput.Text, MOTD));
+                sw.Write(string.Format(PropertiesTemplate, serverIPInput.Text, serverPortInput.Text, serverRenderDistInput.Text, gamemode, hardcore, serverSeedInput.Text, MOTD, "true", "true"));
                 sw.Close();
             }
             File.WriteAllText(ServerFilePath + serverNameInput.Text + ".fmsl", ServerData);
@@ -346,7 +350,7 @@ broadcast-console-to-ops=true
 broadcast-rcon-to-ops=true
 bug-report-link=
 difficulty=normal
-enable-command-block=true
+enable-command-block={8}
 enable-jmx-monitoring=false
 enable-query=false
 enable-rcon=false
@@ -378,7 +382,7 @@ op-permission-level=4
 pause-when-empty-seconds=60
 player-idle-timeout=0
 prevent-proxy-connections=false
-pvp=true
+pvp={7}
 query.port=25565
 rate-limit=0
 rcon.password=

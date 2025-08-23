@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MinecraftServerLauncher.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="750" d:DesignWidth="800">
+             d:DesignHeight="950" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
@@ -44,7 +44,13 @@
                     <TextBlock Text="Max Render Distance" FontSize="18" Margin="5,0,0,0" HorizontalAlignment="Left"/>
                     <TextBox x:Name="serverRenderDistInput" Margin="5,4,0,0" Height="30" Text="10" FontSize="15" VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
                     <TextBlock x:Name="renderDistErrorText" Text="" Foreground="{StaticResource Launcher.RedBrush}" Margin="5,0,0,5" FontSize="15" VerticalAlignment="Top"/>
-                    
+
+                    <TextBlock Text="Allow Command Blocks" FontSize="18" Margin="5,0,0,0" HorizontalAlignment="Left"/>
+                    <CheckBox x:Name="serverCommandBlockToggle" Content="Allow Command Blocks" IsChecked="True" FontSize="15" Margin="5,4,0,5"/>
+
+                    <TextBlock Text="Allow PvP" FontSize="18" Margin="5,0,0,0" HorizontalAlignment="Left"/>
+                    <CheckBox x:Name="serverPvPToggle" Content="Allow PvP" IsChecked="True" FontSize="15" Margin="5,4,0,5"/>
+
                     <Rectangle Height="2" Margin="5,7,5,7" Fill="{StaticResource Launcher.Window.GrayBrush6}"/>
                     
                     <StackPanel Orientation="Horizontal">
