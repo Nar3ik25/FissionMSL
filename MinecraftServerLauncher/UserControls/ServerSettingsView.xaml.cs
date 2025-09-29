@@ -1,5 +1,5 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-08-23 at 03:04
+// Last changed on 2025-09-05 at 04:03
 // 1..2..3..4.. what comes after 4?
 
 using System.Diagnostics;
@@ -132,6 +132,12 @@ namespace MinecraftServerLauncher.UserControls
                 LoadServers.RefreshList();
                 MainWindow.Instance.CloseServerSettings();
             }
+        }
+
+        private void BacktoList_withoutSave_Button_Clicked(object sender, RoutedEventArgs e)
+        {
+            LoadServers.RefreshList();
+            MainWindow.Instance.CloseServerSettings();
         }
 
         #region Settings Buttons

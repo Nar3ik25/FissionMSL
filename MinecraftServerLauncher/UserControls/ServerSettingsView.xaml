@@ -15,6 +15,7 @@
         <Grid>
             <TextBlock Text="Server Settings" FontSize="25" Margin="5,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
             <Button Content="Save and go back to list" Width="250" FontSize="20" Margin="0,0,5,0" Style="{StaticResource NormalButton}" HorizontalAlignment="Right" Click="BacktoList_Button_Clicked"/>
+            <Button Content="Back to list without saving" Width="260" FontSize="20" Margin="0,0,265,0" Style="{StaticResource NormalButton}" HorizontalAlignment="Right" Click="BacktoList_withoutSave_Button_Clicked"/>
         </Grid>
 
         <Border Grid.Row="1" Margin="5" Padding="7" Background="{StaticResource Launcher.Window.GrayBrush3}" BorderBrush="{StaticResource Launcher.Window.GrayBrush6}" BorderThickness="4" CornerRadius="10">
