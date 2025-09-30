@@ -1,20 +1,7 @@
 ﻿using Microsoft.WindowsAPICodePack.Dialogs;
-using MinecraftServerLauncher.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.Intrinsics.Arm;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace MinecraftServerLauncher
 {
@@ -91,6 +78,7 @@ namespace MinecraftServerLauncher
                             "\nfile-path=" + ServerPath +
                             "\nram-allocation=" + serverRamInput.Text +
                             "\ndate=never";
+
             File.WriteAllText(ServerPath + serverNameInput.Text + ".fmsl", ServerData);
 
             List<string> pathLines = new List<string>();
