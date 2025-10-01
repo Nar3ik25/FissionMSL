@@ -42,13 +42,20 @@ namespace MinecraftServerLauncher.UserControls
         {
             LoadServers.RefreshList();
 
-            if (LoadServers.Servers.Count == 0 && isLoaded)
+            if (LoadServers.Servers.Count == 0 && isLoaded && string.IsNullOrEmpty(LoadServers.Filter))
             {
                 noServerText.Visibility = Visibility.Visible;
+                noServerTextSearch.Visibility = Visibility.Hidden;
+            }
+            else if (LoadServers.Servers.Count == 0 && isLoaded && !string.IsNullOrEmpty(LoadServers.Filter))
+            {
+                noServerText.Visibility = Visibility.Hidden;
+                noServerTextSearch.Visibility = Visibility.Visible;
             }
             else if (isLoaded)
             {
                 noServerText.Visibility = Visibility.Hidden;
+                noServerTextSearch.Visibility = Visibility.Hidden;
             }
         }
 
@@ -114,6 +121,28 @@ namespace MinecraftServerLauncher.UserControls
             {
             }
             RefreshList();
+        }
+
+        // Updates the filter for the server view
+        private void searchBar_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            LoadServers.SetFilter(searchBar.Text);
+
+            if (LoadServers.Servers.Count == 0 && isLoaded && string.IsNullOrEmpty(LoadServers.Filter))
+            {
+                noServerText.Visibility = Visibility.Visible;
+                noServerTextSearch.Visibility = Visibility.Hidden;
+            }
+            else if (LoadServers.Servers.Count == 0 && isLoaded && !string.IsNullOrEmpty(LoadServers.Filter))
+            {
+                noServerText.Visibility = Visibility.Hidden;
+                noServerTextSearch.Visibility = Visibility.Visible;
+            }
+            else if (isLoaded)
+            {
+                noServerText.Visibility = Visibility.Hidden;
+                noServerTextSearch.Visibility = Visibility.Hidden;
+            }
         }
     }
 }

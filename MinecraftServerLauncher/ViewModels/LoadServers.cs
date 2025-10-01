@@ -8,6 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Media.Imaging;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace MinecraftServerLauncher.ViewModels
 {
@@ -99,6 +100,7 @@ namespace MinecraftServerLauncher.ViewModels
         /// List of servers in the server view.
         /// </summary>
         public static ReadOnlyObservableCollection<ServerData> Servers { get; }
+        public static string Filter { get; private set; } = string.Empty;
 
         /// <summary>
         /// Refreshes the server listing view from the 'ServerList.txt' file and removes any non-existant servers.
@@ -175,111 +177,133 @@ namespace MinecraftServerLauncher.ViewModels
                                 }
                             }
 
-                            // Checks if this is a valid 'FissionMSL.data' file
-                            if (!Directory.Exists(serverData.ServerFilePath))
+                            bool filterContinue = false;
+
+                            // Check for a filter and compare with the server name to see if it should be displayed
+                            if (!string.IsNullOrEmpty(Filter))
                             {
-                                // If not valid, this server will be removed from the 'ServerList.txt' file
-                                lostLines.Add(line);
+                                if (serverData.ServerName.Contains(Filter, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    filterContinue = true;
+                                }
+                                else
+                                {
+                                    filterContinue = false;
+                                }
                             }
                             else
                             {
-                                // If valid, check the server version file and finalize adding the server to the list view
+                                filterContinue = true;
+                            }
 
-                                string[] version = Directory.GetFiles(serverData.ServerFilePath, "*.version");
-
-                                if (version.Length == 0)
+                            if (filterContinue)
+                            {
+                                // Checks if this is a valid 'FissionMSL.data' file
+                                if (!Directory.Exists(serverData.ServerFilePath))
                                 {
-                                    serverData.ServerVersion = "Unknown Version";
+                                    // If not valid, this server will be removed from the 'ServerList.txt' file
+                                    lostLines.Add(line);
                                 }
                                 else
                                 {
-                                    serverData.ServerVersion = "Minecraft " + Path.GetFileNameWithoutExtension(version[0]);
-                                }
+                                    // If valid, check the server version file and finalize adding the server to the list view
 
-                                // Looks at the server.properties file and gets the relevent data.
-                                if (File.Exists(serverData.ServerFilePath + "server.properties"))
-                                {
-                                    string[] propertiesLines = File.ReadAllLines(serverData.ServerFilePath + "server.properties");
+                                    string[] version = Directory.GetFiles(serverData.ServerFilePath, "*.version");
 
-                                    for (int i = 0; i < propertiesLines.Length; i++)
+                                    if (version.Length == 0)
                                     {
-                                        var firstEightChars = propertiesLines[i].Length <= 8 ? propertiesLines[i] : propertiesLines[i].Substring(0, 8);
+                                        serverData.ServerVersion = "Unknown Version";
+                                    }
+                                    else
+                                    {
+                                        serverData.ServerVersion = "Minecraft " + Path.GetFileNameWithoutExtension(version[0]);
+                                    }
 
-                                        if (ipRegex.IsMatch(firstEightChars))
-                                        {
-                                            serverData.ServerIP = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
-                                        }
-                                        else if (portRegex.IsMatch(firstEightChars))
-                                        {
-                                            serverData.ServerPort = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
-                                        }
-                                        else if (gamemodeRegex.IsMatch(firstEightChars))
-                                        {
-                                            serverData.ServerGamemode = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
-                                        }
-                                        else if (viewDistRegex.IsMatch(firstEightChars))
-                                        {
-                                            serverData.ServerRenderDistance = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
-                                        }
-                                        else if (commandBlockRegex.IsMatch(firstEightChars))
-                                        {
-                                            var boolean = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
-                                            if (boolean == "true")
-                                                serverData.ServerCommandBlock = true;
-                                            else
-                                                serverData.ServerCommandBlock = false;
-                                        }
-                                        else if (hardcoreRegex.IsMatch(firstEightChars))
-                                        {
-                                            var boolean = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
-                                            if (boolean == "true")
-                                                serverData.ServerHardcore = true;
-                                            else
-                                                serverData.ServerHardcore = false;
-                                        }
-                                        else
-                                        {
-                                            var firstFourChars = propertiesLines[i].Length <= 4 ? propertiesLines[i] : propertiesLines[i].Substring(0, 4);
+                                    // Looks at the server.properties file and gets the relevent data.
+                                    if (File.Exists(serverData.ServerFilePath + "server.properties"))
+                                    {
+                                        string[] propertiesLines = File.ReadAllLines(serverData.ServerFilePath + "server.properties");
 
-                                            if (seedRegex.IsMatch(firstFourChars))
+                                        for (int i = 0; i < propertiesLines.Length; i++)
+                                        {
+                                            var firstEightChars = propertiesLines[i].Length <= 8 ? propertiesLines[i] : propertiesLines[i].Substring(0, 8);
+
+                                            if (ipRegex.IsMatch(firstEightChars))
                                             {
-                                                serverData.ServerSeed = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
+                                                serverData.ServerIP = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
                                             }
-                                            else if (pvpRegex.IsMatch(firstFourChars))
+                                            else if (portRegex.IsMatch(firstEightChars))
+                                            {
+                                                serverData.ServerPort = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
+                                            }
+                                            else if (gamemodeRegex.IsMatch(firstEightChars))
+                                            {
+                                                serverData.ServerGamemode = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
+                                            }
+                                            else if (viewDistRegex.IsMatch(firstEightChars))
+                                            {
+                                                serverData.ServerRenderDistance = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
+                                            }
+                                            else if (commandBlockRegex.IsMatch(firstEightChars))
                                             {
                                                 var boolean = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
                                                 if (boolean == "true")
-                                                    serverData.ServerPvP = true;
+                                                    serverData.ServerCommandBlock = true;
                                                 else
-                                                    serverData.ServerPvP = false;
+                                                    serverData.ServerCommandBlock = false;
                                             }
-                                            else if (motdRegex.IsMatch(firstFourChars))
+                                            else if (hardcoreRegex.IsMatch(firstEightChars))
                                             {
-                                                serverData.MOTD = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
+                                                var boolean = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
+                                                if (boolean == "true")
+                                                    serverData.ServerHardcore = true;
+                                                else
+                                                    serverData.ServerHardcore = false;
+                                            }
+                                            else
+                                            {
+                                                var firstFourChars = propertiesLines[i].Length <= 4 ? propertiesLines[i] : propertiesLines[i].Substring(0, 4);
 
-                                                if (string.IsNullOrEmpty(serverData.MOTD))
-                                                    serverData.MOTD = @"\u00a76\u2550\u2550 \u2605\u00a7b A Cool Minecraft Server \u00a76\u2605 \u2550\u2550\u00a7r\n\u00a77Hosted with\u00a7f Fission\u00a74 MSL";
+                                                if (seedRegex.IsMatch(firstFourChars))
+                                                {
+                                                    serverData.ServerSeed = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
+                                                }
+                                                else if (pvpRegex.IsMatch(firstFourChars))
+                                                {
+                                                    var boolean = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
+                                                    if (boolean == "true")
+                                                        serverData.ServerPvP = true;
+                                                    else
+                                                        serverData.ServerPvP = false;
+                                                }
+                                                else if (motdRegex.IsMatch(firstFourChars))
+                                                {
+                                                    serverData.MOTD = propertiesLines[i].Substring(propertiesLines[i].IndexOf('=') + 1);
+
+                                                    if (string.IsNullOrEmpty(serverData.MOTD))
+                                                        serverData.MOTD = @"\u00a76\u2550\u2550 \u2605\u00a7b A Cool Minecraft Server \u00a76\u2605 \u2550\u2550\u00a7r\n\u00a77Hosted with\u00a7f Fission\u00a74 MSL";
+                                                }
                                             }
                                         }
                                     }
+
+                                    if (File.Exists(serverData.ServerFilePath + "server-icon.png"))
+                                    {
+                                        Bitmap img = new Bitmap(serverData.ServerFilePath + "server-icon.png");
+                                        serverData.ServerIcon = MainWindow.Bitmap2BitmapImage(img);
+                                    }
+                                    else
+                                    {
+                                        serverData.ServerIcon = new BitmapImage(new Uri("pack://application:,,,/Dictionaries/ServerMysteryIcon.png", UriKind.Absolute));
+                                    }
+
+                                    serverData.ID = id;
+                                    id++;
+
+                                    serverData.FinishData();
+
+                                    _servers.Add(serverData);
                                 }
-
-                                if (File.Exists(serverData.ServerFilePath + "server-icon.png"))
-                                {
-                                    Bitmap img = new Bitmap(serverData.ServerFilePath + "server-icon.png");
-                                    serverData.ServerIcon = MainWindow.Bitmap2BitmapImage(img);
-                                }
-                                else
-                                {
-                                    serverData.ServerIcon = new BitmapImage(new Uri("pack://application:,,,/Dictionaries/ServerMysteryIcon.png", UriKind.Absolute));
-                                }
-
-                                serverData.ID = id;
-                                id++;
-
-                                serverData.FinishData();
-
-                                _servers.Add(serverData);
                             }
                         }
                         else
@@ -316,6 +340,12 @@ namespace MinecraftServerLauncher.ViewModels
             {
                 // TODO: Probably need an error message for this, not sure yet though.
             }
+        }
+
+        public static void SetFilter(string _filter)
+        {
+            Filter = _filter;
+            RefreshList();
         }
 
         // Constructor for LoadServers

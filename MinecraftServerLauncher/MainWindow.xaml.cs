@@ -27,7 +27,7 @@ namespace MinecraftServerLauncher
         public static readonly string ApplicationDataPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\FissionMSL\";
 
         // The application version number (Must be changed for each update!)
-        public static readonly Version InstalledVersion = new Version(0, 3, 6, 0);
+        public static readonly Version InstalledVersion = new Version(0, 3, 7, 0);
 
         // Java path for the application.
         public static string ApplicationJavaPath = null;

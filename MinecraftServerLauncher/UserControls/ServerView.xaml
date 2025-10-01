@@ -19,13 +19,13 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition/>
+            <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
 
         <Grid>
             <TextBlock Text="Server List" FontSize="25" Margin="5,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-            <Button Content="Create Server" Width="150" FontSize="20" Margin="0,0,5,0" Style="{StaticResource NormalButton}" HorizontalAlignment="Right" Click="AddServer_Button_Clicked"/>
-            <Button Content="Import Server" Width="150" FontSize="20" Margin="0,0,165,0" Style="{StaticResource NormalButton}" HorizontalAlignment="Right" Click="ImportServer_Button_Clicked"/>
-            <Button Content="Refresh List" Width="150" FontSize="20" Margin="0,0,325,0" Style="{StaticResource NormalButton}" HorizontalAlignment="Right" Click="RefreshList_Button_Clicked"/>
+            <TextBox x:Name="searchBar" Margin="350,0,5,0" FontSize="18" VerticalAlignment="Center" TextChanged="searchBar_TextChanged"/>
+            <Path Data="{StaticResource MagnifierIconGeometry}" Margin="320,0,0,0" Width="23" Height="25" Fill="White" Stretch="Fill" HorizontalAlignment="Left"/>
         </Grid>
 
         <ListView x:Name="serversListBox" ItemsSource="{Binding Servers}" SelectedIndex="0" Grid.Row="1" Margin="5" Padding="7">
@@ -69,10 +69,20 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <Grid Grid.Row="1" x:Name="noServerText">
-            <TextBlock Text="You have no Fission MSL servers." Margin="0,0,0,30" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            <TextBlock Text="Create a server with the button in the top right." Margin="0,35,0,0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            <!-- TODO: change the above text block to also include importing servers once that is implemented -->
+        <Grid Grid.Row="2">
+            <Button Content="Create Server" Width="150" FontSize="20" Margin="0,0,5,0" Style="{StaticResource NormalButton}" HorizontalAlignment="Right" Click="AddServer_Button_Clicked"/>
+            <Button Content="Import Server" Width="150" FontSize="20" Margin="0,0,165,0" Style="{StaticResource NormalButton}" HorizontalAlignment="Right" Click="ImportServer_Button_Clicked"/>
+            <Button Content="Refresh List" Width="150" FontSize="20" Margin="5,0,0,0" Style="{StaticResource NormalButton}" HorizontalAlignment="Left" Click="RefreshList_Button_Clicked"/>
         </Grid>
+
+        <Grid Grid.Row="1" x:Name="noServerText">
+            <TextBlock Text="No Fission MSL servers found." Margin="0,0,0,30" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <TextBlock Text="Create or import a server with the buttons in the bottom right." Margin="0,35,0,0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Grid>
+
+        <Grid Grid.Row="1" x:Name="noServerTextSearch" Visibility="Hidden">
+            <TextBlock Text="No Fission MSL servers found with that name." Margin="0,0,0,0" FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Grid>
+
     </Grid>
 </UserControl>
