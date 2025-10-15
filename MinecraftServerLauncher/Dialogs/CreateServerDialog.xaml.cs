@@ -1,5 +1,5 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-08-23 at 03:04
+// Last changed on 2025-10-15 at 03:19
 // Twenty-eight stab wounds!
 
 using System.ComponentModel;
@@ -234,39 +234,43 @@ namespace MinecraftServerLauncher
                 Directory.CreateDirectory(ServerFilePath);
                 switch (versionListBox.SelectedIndex)
                 {
-                    case 0: // 1.21.9
+                    case 0: // 1.21.10
+                        File.WriteAllText(ServerFilePath + "1.21.10.version", "1.21.10");
+                        webClient.DownloadFileAsync(new Uri("https://piston-data.mojang.com/v1/objects/95495a7f485eedd84ce928cef5e223b757d2f764/server.jar"), ServerFilePath + "server.jar");
+                        break;
+                    case 1: // 1.21.9
                         File.WriteAllText(ServerFilePath + "1.21.9.version", "1.21.9");
                         webClient.DownloadFileAsync(new Uri("https://piston-data.mojang.com/v1/objects/11e54c2081420a4d49db3007e66c80a22579ff2a/server.jar"), ServerFilePath + "server.jar");
                         break;
-                    case 1: // 1.21.8
+                    case 2: // 1.21.8
                         File.WriteAllText(ServerFilePath + "1.21.8.version", "1.21.8");
                         webClient.DownloadFileAsync(new Uri("https://piston-data.mojang.com/v1/objects/6bce4ef400e4efaa63a13d5e6f6b500be969ef81/server.jar"), ServerFilePath + "server.jar");
                         break;
-                    case 2: // 1.21.5
+                    case 3: // 1.21.5
                         File.WriteAllText(ServerFilePath + "1.21.5.version", "1.21.5");
                         webClient.DownloadFileAsync(new Uri("https://piston-data.mojang.com/v1/objects/e6ec2f64e6080b9b5d9b471b291c33cc7f509733/server.jar"), ServerFilePath + "server.jar");
                         break;
-                    case 3: // 1.19.4
+                    case 4: // 1.19.4
                         File.WriteAllText(ServerFilePath + "1.19.4.version", "1.19.4");
                         webClient.DownloadFileAsync(new Uri("https://piston-data.mojang.com/v1/objects/8f3112a1049751cc472ec13e397eade5336ca7ae/server.jar"), ServerFilePath + "server.jar");
                         break;
-                    case 4: // 1.16.5
+                    case 5: // 1.16.5
                         File.WriteAllText(ServerFilePath + "1.16.5.version", "1.16.5");
                         webClient.DownloadFileAsync(new Uri("https://piston-data.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar"), ServerFilePath + "server.jar");
                         break;
-                    case 5: // 1.12.2
+                    case 6: // 1.12.2
                         File.WriteAllText(ServerFilePath + "1.12.2.version", "1.12.2");
                         webClient.DownloadFileAsync(new Uri("https://piston-data.mojang.com/v1/objects/886945bfb2b978778c3a0288fd7fab09d315b25f/server.jar"), ServerFilePath + "server.jar");
                         break;
-                    case 6: // 1.8.9
+                    case 7: // 1.8.9
                         File.WriteAllText(ServerFilePath + "1.8.9.version", "1.8.9");
                         webClient.DownloadFileAsync(new Uri("https://piston-data.mojang.com/v1/objects/b58b2ceb36e01bcd8dbf49c8fb66c55a9f0676cd/server.jar"), ServerFilePath + "server.jar");
                         break;
-                    case 7: // 1.7.10
+                    case 8: // 1.7.10
                         File.WriteAllText(ServerFilePath + "1.7.10.version", "1.7.10");
                         webClient.DownloadFileAsync(new Uri("https://piston-data.mojang.com/v1/objects/952438ac4e01b4d115c5fc38f891710c4941df29/server.jar"), ServerFilePath + "server.jar");
                         break;
-                    case 8: // 1.0.0
+                    case 9: // 1.0.0
                         File.WriteAllText(ServerFilePath + "1.0.0.version", "1.0.0");
                         webClient.DownloadFileAsync(new Uri("https://files.betacraft.uk/server-archive/release/1.0/1.0.0.jar"), ServerFilePath + "server.jar");
                         break;

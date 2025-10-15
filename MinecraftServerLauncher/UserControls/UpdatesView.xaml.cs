@@ -373,7 +373,12 @@ namespace MinecraftServerLauncher.UserControls
             }
             catch
             {
-                latestVersionText.Text = "Latest Version: Unknown";
+                Action ac = () =>
+                {
+                    latestVersionText.Text = "Latest Version: Unknown";
+                    CheckForUpdatesCallback();
+                };
+                Dispatcher.BeginInvoke(ac);
             }
         }
 

@@ -7,7 +7,7 @@
         mc:Ignorable="d" Style="{StaticResource LauncherDialogStyle}" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
         Title="Are you sure?" Height="200" Width="400">
     <Grid>
-        <Border Padding="7" Grid.Row="1" Margin="5" Background="{StaticResource Launcher.Window.GrayBrush4}" BorderThickness="4" CornerRadius="20" BorderBrush="{StaticResource Launcher.Window.GrayBrush6}">
+        <Border Padding="7" Grid.Row="1" Margin="3" Background="{StaticResource Launcher.Window.GrayBrush4}" BorderThickness="4" CornerRadius="10" BorderBrush="{StaticResource Launcher.Window.GrayBrush6}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>

@@ -58,7 +58,12 @@ namespace MinecraftServerLauncher
             }
             catch
             {
-                DialogResult = false;
+                try
+                {
+                    DialogResult = false;
+                }
+                catch { }
+
                 Close();
             }
         }

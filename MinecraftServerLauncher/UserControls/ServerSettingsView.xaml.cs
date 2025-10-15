@@ -1,5 +1,5 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-09-05 at 04:03
+// Last changed on 2025-10-15 at 03:34
 // 1..2..3..4.. what comes after 4?
 
 using System.Diagnostics;
@@ -30,15 +30,15 @@ namespace MinecraftServerLauncher.UserControls
             InitializeComponent();
         }
 
-        // Validates and saves the changes made and returns the user to the server view panel.
-        private void BacktoList_Button_Clicked(object sender, RoutedEventArgs e)
+        // Validates and saves the changes made.
+        private void Save_Button_Clicked(object sender, RoutedEventArgs e)
         {
             int ram = 0;
             int port = 0;
             int renderDist = 0;
 
             ramErrorText.Text = "";
-            portErrorText.Text = "";
+            IPPortErrorText.Text = "";
             renderDistErrorText.Text = "";
 
             if (!Int32.TryParse(serverRamInput.Text, out ram))
@@ -58,12 +58,12 @@ namespace MinecraftServerLauncher.UserControls
             }
             else if (!Int32.TryParse(serverPortInput.Text, out port))
             {
-                portErrorText.Text = "Invalid Server Port!";
+                IPPortErrorText.Text = "Invalid Server Port!";
                 return;
             }
             else if (port < 1025 || port > 65534)
             {
-                portErrorText.Text = "Invalid Server Port!";
+                IPPortErrorText.Text = "Invalid Server Port!";
                 return;
             }
             else if (!Int32.TryParse(serverRenderDistInput.Text, out renderDist))
@@ -129,12 +129,10 @@ namespace MinecraftServerLauncher.UserControls
                 }
 
                 File.WriteAllText(ServerFilePath + serverName.Text + ".fmsl", ServerData);
-                LoadServers.RefreshList();
-                MainWindow.Instance.CloseServerSettings();
             }
         }
 
-        private void BacktoList_withoutSave_Button_Clicked(object sender, RoutedEventArgs e)
+        private void BacktoList_Button_Clicked(object sender, RoutedEventArgs e)
         {
             LoadServers.RefreshList();
             MainWindow.Instance.CloseServerSettings();

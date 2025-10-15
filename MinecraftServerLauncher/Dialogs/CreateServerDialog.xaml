@@ -38,6 +38,9 @@
                 <TextBlock Text="Version" HorizontalAlignment="Center" FontSize="20" Margin="0,0,5,5"/>
                 <ListBox x:Name="versionListBox" Margin="0,30,5,0" SelectionChanged="CheckVersionSelection" SelectedIndex="0">
                     <ListBoxItem>
+                        <TextBlock Text="Minecraft 1.21.10" FontSize="17"/>
+                    </ListBoxItem>
+                    <ListBoxItem>
                         <TextBlock Text="Minecraft 1.21.9" FontSize="17"/>
                     </ListBoxItem>
                     <ListBoxItem>

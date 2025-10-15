@@ -7,16 +7,29 @@
         mc:Ignorable="d" Style="{StaticResource LauncherDialogStyle}" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
         Title="Error" Height="200" Width="400">
     <Grid>
-        <Border Padding="7" Grid.Row="1" Margin="5" Background="{StaticResource Launcher.Window.GrayBrush4}" BorderThickness="4" CornerRadius="20" BorderBrush="{StaticResource Launcher.Window.GrayBrush6}">
+        <Border Padding="7" Grid.Row="1" Margin="3" Background="{StaticResource Launcher.Window.GrayBrush4}" BorderThickness="4" CornerRadius="10" BorderBrush="{StaticResource Launcher.Window.GrayBrush6}">
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition/>
-                    <RowDefinition Height="40"/>
-                </Grid.RowDefinitions>
-                <TextBlock Text="An error occured!" HorizontalAlignment="Center" FontSize="35"/>
-                <TextBlock Grid.Row="1" Text="Something unexpected happened." TextWrapping="Wrap" HorizontalAlignment="Center" FontSize="20"/>
-                <Button x:Name="okButton" Grid.Row="3" Content="Ok" Width="80" FontSize="20" Style="{StaticResource NormalButton}" Click="Ok_Button_Clicked"/>
+                <Grid x:Name="mainStuff">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="An error occured!" HorizontalAlignment="Center" FontSize="35"/>
+                    <TextBlock Grid.Row="1" Text="Something unexpected happened." TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" FontSize="20"/>
+                    <Button x:Name="okButton" Grid.Row="3" HorizontalAlignment="Left" Margin="20,0,0,0" Content="Ok" Width="100" FontSize="20" Style="{StaticResource NormalButton}" Click="Ok_Button_Clicked"/>
+                    <Button x:Name="detailsButton" Grid.Row="3" HorizontalAlignment="Right" Margin="0,0,20,0" Content="Details" Width="100" FontSize="20" Style="{StaticResource NormalButton}" Click="Details_Button_Clicked"/>
+                </Grid>
+                <Grid x:Name="detailsStuff" Visibility="Hidden">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Error Details:" HorizontalAlignment="Center" FontSize="20"/>
+                    <TextBlock x:Name="detailText" Grid.Row="1" Text="This should have details, if not that is a bug" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" FontSize="20"/>
+                    <Button x:Name="okButton2" Grid.Row="3" HorizontalAlignment="Center" Margin="0,0,0,0" Content="Ok" Width="100" FontSize="20" Style="{StaticResource NormalButton}" Click="Ok_Button_Clicked"/>
+                </Grid>
             </Grid>
         </Border>
     </Grid>

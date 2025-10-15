@@ -1,5 +1,5 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-09-05 at 04:03
+// Last changed on 2025-10-15 at 04:32
 // Don't you love when the errors solve themselves?
 
 using MinecraftServerLauncher.ViewModels;
@@ -27,7 +27,7 @@ namespace MinecraftServerLauncher
         public static readonly string ApplicationDataPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\FissionMSL\";
 
         // The application version number (Must be changed for each update!)
-        public static readonly Version InstalledVersion = new Version(0, 3, 7, 0);
+        public static readonly Version InstalledVersion = new Version(0, 3, 8, 0);
 
         // Java path for the application.
         public static string ApplicationJavaPath = null;
@@ -74,7 +74,7 @@ namespace MinecraftServerLauncher
                 {
                     List<string> settingsLines = File.ReadAllLines(ApplicationDataPath + "AppSettings.txt").ToList();
 
-                    if (settingsLines.Count == 2)
+                    if (!string.IsNullOrEmpty(settingsLines[0]) && !string.IsNullOrEmpty(settingsLines[1]) && settingsLines.Count == 2)
                     {
                         fileNotFound = false;
 
@@ -96,6 +96,14 @@ namespace MinecraftServerLauncher
                         if (appSetupDialog.ShowDialog() == true)
                         {
                             ApplicationJavaPath = Directory.GetCurrentDirectory() + @"\jdk-21.0.6\bin\java.exe";
+                        }
+                        else
+                        {
+                            ApplicationJavaPath = "";
+
+                            ErrorDialog errorDialog = new ErrorDialog("Java wasn't able to install, try restarting Fission MSL");
+                            errorDialog.Owner = MainWindow.Instance;
+                            errorDialog.ShowDialog();
                         }
                     }
 
@@ -247,7 +255,7 @@ namespace MinecraftServerLauncher
         // Starts the server specified by the inputs.
         public async void StartServer(ServerData serverData)
         {
-            if (File.Exists(serverData.ServerPath) && ApplicationJavaPath != null)
+            if (File.Exists(serverData.ServerPath) && !string.IsNullOrEmpty(ApplicationJavaPath))
             {
                 if (consoleControl.IsProcessRunning)
                     consoleControl.StopProcess();
@@ -275,7 +283,7 @@ namespace MinecraftServerLauncher
             }
             else
             {
-                ErrorDialog errorDialog = new ErrorDialog();
+                ErrorDialog errorDialog = new ErrorDialog("Either your server doesn't exist, or you don't have Java installed.");
                 errorDialog.Owner = MainWindow.Instance;
                 errorDialog.ShowDialog();
 
@@ -302,8 +310,7 @@ namespace MinecraftServerLauncher
             serverSettingsView.serverCommandBlockToggle.IsChecked = serverData.ServerCommandBlock;
             serverSettingsView.serverPath.Text = serverData.ServerFilePath;
             serverSettingsView.ramErrorText.Text = "";
-            serverSettingsView.IPErrorText.Text = "";
-            serverSettingsView.portErrorText.Text = "";
+            serverSettingsView.IPPortErrorText.Text = "";
             serverSettingsView.renderDistErrorText.Text = "";
             serverView.Visibility = Visibility.Hidden;
             serverSettingsView.Visibility = Visibility.Visible;
