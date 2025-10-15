@@ -2,13 +2,14 @@
 // Last changed on 2025-08-15 at 17:24
 // First we mine, then we craft!
 
-using System.Windows.Controls;
+using MinecraftServerLauncher.ViewModels;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
-using System.Windows;
 using System.Net;
 using System.Text.RegularExpressions;
-using MinecraftServerLauncher.ViewModels;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 
 namespace MinecraftServerLauncher.UserControls
@@ -190,29 +191,14 @@ namespace MinecraftServerLauncher.UserControls
         public UpdatesView()
         {
             InitializeComponent();
-
-            rootPath = Directory.GetCurrentDirectory();
-            appZip = Path.Combine(rootPath, "Update.zip");
-
             CheckForUpdates();
             CheckForChangeLog();
         }
 
         private void Update_Button_Clicked(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.Instance.pendingUpdate != true)
-            {
-                topText.Text = "Downloading update, please wait...";
-                updateButton.IsEnabled = false;
-                WebClient webClient = new WebClient();
-                webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadCompletedCallback);
-                webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
-                webClient.DownloadFileAsync(new Uri("https://drive.google.com/uc?export=download&id=1gWYdfsnEikLNPf0PUea79CvwZOkvkaSw"), appZip);
-            }
-            else
-            {
-                MainWindow.Instance.Close();
-            }
+            Process.Start(Directory.GetCurrentDirectory() + "\\UpdateHelper.exe", string.Empty);
+            MainWindow.Instance.Close();
         }
 
         private void OnListBoxItem_Mouse_DoubleClick(object sender, RoutedEventArgs e)
@@ -223,22 +209,6 @@ namespace MinecraftServerLauncher.UserControls
             changeLogViewer.changeList.Document.Blocks.Clear();
             changeLogViewer.changeList.Document.Blocks.Add(new Paragraph(new Run(LoadChangeLogs.ChangeLogs[changelogListBox.SelectedIndex].Changes)));
             changeLogViewer.ShowDialog();
-        }
-
-        // Progress changed callback.
-        private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            progressBar.Value = e.ProgressPercentage;
-        }
-
-        // Download completed callback.
-        private void DownloadCompletedCallback(object sender, AsyncCompletedEventArgs e)
-        {
-            topText.Text = "Close to finish update.";
-            progressBar.Value = 100;
-            MainWindow.Instance.pendingUpdate = true;
-            updateButton.Content = "Restart";
-            updateButton.IsEnabled = true;
         }
 
         // Checks online for any updates to the software.

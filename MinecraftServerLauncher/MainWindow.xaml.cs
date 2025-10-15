@@ -27,7 +27,7 @@ namespace MinecraftServerLauncher
         public static readonly string ApplicationDataPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\FissionMSL\";
 
         // The application version number (Must be changed for each update!)
-        public static readonly Version InstalledVersion = new Version(0, 3, 8, 0);
+        public static readonly Version InstalledVersion = new Version(0, 3, 8, 1);
 
         // Java path for the application.
         public static string ApplicationJavaPath = null;
@@ -131,55 +131,6 @@ namespace MinecraftServerLauncher
         // Logic done when the closing event is triggered.
         private async void OnMainWindowClosing(object sender, CancelEventArgs e)
         {
-            // If there is a pending update check some stuff.
-            if (pendingUpdate)
-            {
-                // If a console process is running safely shut it down before closing the window.
-                if (consoleControl.IsProcessRunning)
-                {
-                    if (consoleInputBox.IsEnabled)
-                    {
-                        e.Cancel = true;
-
-                        WindowClosingPopup wcp = new();
-                        wcp.Owner = this;
-                        wcp.Show();
-
-                        consoleControl.WriteInput("stop\n", Color.FromRgb(100, 100, 100), true);
-                        consoleInputBox.IsEnabled = false;
-
-                        await Task.Run(() => WaitForServerStop());
-
-                        Close();
-                    }
-                    else
-                    {
-                        e.Cancel = true;
-
-                        WindowClosingPopup wcp = new();
-                        wcp.Owner = this;
-                        wcp.Show();
-
-                        closePressedWhileStopping = true;
-
-                        return;
-                    }
-                }
-                // Start the update helper program to finalize the update.
-                else
-                {
-                    try
-                    {
-                        Process.Start(Directory.GetCurrentDirectory() + "\\UpdateHelper.exe", string.Empty);
-                    }
-                    catch { }
-                    finally
-                    {
-                        pendingUpdate = false;
-                    }
-                }
-            }
-
             // If a console process is running safely shut it down before closing the window.
             if (consoleControl.IsProcessRunning)
             {

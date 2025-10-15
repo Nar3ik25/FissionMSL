@@ -25,7 +25,6 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="90"/>
-                    <RowDefinition Height="30"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid>
@@ -46,7 +45,6 @@
                     </Grid>
                     <Button x:Name="updateButton" IsEnabled="False" Grid.Column="1" Content="Update" Width="180" FontSize="30" Margin="0,0,5,0" Style="{StaticResource NormalButton}" HorizontalAlignment="Right" VerticalAlignment="Center" Click="Update_Button_Clicked"/>
                 </Grid>
-                <ProgressBar x:Name="progressBar" Margin="5" Grid.Row="1"/>
                 <Grid Grid.Row="2">
                     <ListBox x:Name="changelogListBox" ItemsSource="{Binding ChangeLogs}" SelectedIndex="0" Grid.Row="1" Margin="5" Padding="7">
                         <ListBox.ItemContainerStyle>
