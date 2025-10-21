@@ -14,6 +14,11 @@
     <Color x:Key="Launcher.FontColor">#F2F2F2</Color>
     <Color x:Key="Launcher.Selected.BackgroundColor">#9E0700</Color>
 
+    <Color x:Key="Launcher.Rarity.Common">#00AD05</Color>
+    <Color x:Key="Launcher.Rarity.Rare">#00A4AD</Color>
+    <Color x:Key="Launcher.Rarity.Epic">#A8439C</Color>
+    <Color x:Key="Launcher.Rarity.Legendary">#B7AE2F</Color>
+
     <Color x:Key="Launcher.RedColor">#D7263D</Color>
     <Color x:Key="Launcher.YellowColor">#FF9F1C</Color>
     <Color x:Key="Launcher.GreenColor">#05AD00</Color>
@@ -27,6 +32,45 @@
     <SolidColorBrush Color="{StaticResource Launcher.Window.GrayColor5}" x:Key="Launcher.Window.GrayBrush5"/>
     <SolidColorBrush Color="{StaticResource Launcher.Window.GrayColor5r}" x:Key="Launcher.Window.GrayBrush5r"/>
     <SolidColorBrush Color="{StaticResource Launcher.Window.GrayColor6}" x:Key="Launcher.Window.GrayBrush6"/>
+
+    <SolidColorBrush Color="{StaticResource Launcher.Rarity.Common}" x:Key="Launcher.Rarity.CommonBrush"/>
+    <LinearGradientBrush x:Key="Launcher.Rarity.CommonGradient" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="{StaticResource Launcher.Rarity.Common}" Offset="0.0" />
+        <GradientStop Color="{StaticResource Launcher.Rarity.Common}" Offset="0.15" />
+        <GradientStop Color="Transparent" Offset="0.5" />
+        <GradientStop Color="Transparent" Offset="1.0" />
+    </LinearGradientBrush>
+    
+    <SolidColorBrush Color="{StaticResource Launcher.Rarity.Rare}" x:Key="Launcher.Rarity.RareBrush"/>
+    <LinearGradientBrush x:Key="Launcher.Rarity.RareGradient" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="{StaticResource Launcher.Rarity.Rare}" Offset="0.0" />
+        <GradientStop Color="{StaticResource Launcher.Rarity.Rare}" Offset="0.15" />
+        <GradientStop Color="Transparent" Offset="0.5" />
+        <GradientStop Color="Transparent" Offset="1.0" />
+    </LinearGradientBrush>
+    
+    <SolidColorBrush Color="{StaticResource Launcher.Rarity.Epic}" x:Key="Launcher.Rarity.EpicBrush"/>
+    <LinearGradientBrush x:Key="Launcher.Rarity.EpicGradient" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="{StaticResource Launcher.Rarity.Epic}" Offset="0.0" />
+        <GradientStop Color="{StaticResource Launcher.Rarity.Epic}" Offset="0.15" />
+        <GradientStop Color="Transparent" Offset="0.5" />
+        <GradientStop Color="Transparent" Offset="1.0" />
+    </LinearGradientBrush>
+    
+    <SolidColorBrush Color="{StaticResource Launcher.Rarity.Legendary}" x:Key="Launcher.Rarity.LegendaryBrush"/>
+    <LinearGradientBrush x:Key="Launcher.Rarity.LegendaryGradient" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="{StaticResource Launcher.Rarity.Legendary}" Offset="0.0" />
+        <GradientStop Color="{StaticResource Launcher.Rarity.Legendary}" Offset="0.15" />
+        <GradientStop Color="Transparent" Offset="0.5" />
+        <GradientStop Color="Transparent" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="Launcher.Rarity.UndefinedGradient" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="{StaticResource Launcher.FontColor}" Offset="0.0" />
+        <GradientStop Color="{StaticResource Launcher.FontColor}" Offset="0.15" />
+        <GradientStop Color="Transparent" Offset="0.5" />
+        <GradientStop Color="Transparent" Offset="1.0" />
+    </LinearGradientBrush>
 
     <SolidColorBrush Color="{StaticResource Launcher.Disabled.FontColor}" x:Key="Launcher.Disabled.FontBrush"/>
     <SolidColorBrush Color="{StaticResource Launcher.FontColor}" x:Key="Launcher.FontBrush"/>

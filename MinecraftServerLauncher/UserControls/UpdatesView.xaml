@@ -46,27 +46,29 @@
                     <Button x:Name="updateButton" IsEnabled="False" Grid.Column="1" Content="Update" Width="180" FontSize="30" Margin="0,0,5,0" Style="{StaticResource NormalButton}" HorizontalAlignment="Right" VerticalAlignment="Center" Click="Update_Button_Clicked"/>
                 </Grid>
                 <Grid Grid.Row="2">
-                    <ListBox x:Name="changelogListBox" ItemsSource="{Binding ChangeLogs}" SelectedIndex="0" Grid.Row="1" Margin="5" Padding="7">
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem" BasedOn="{StaticResource ListBoxItemStyle2}">
+                    <ListView x:Name="changelogListBox" ItemsSource="{Binding ChangeLogs}" SelectedIndex="0" Grid.Row="1" Margin="5" Padding="7">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem" BasedOn="{StaticResource ListViewItemStyle3}">
                                 <EventSetter Event="MouseDoubleClick" Handler="OnListBoxItem_Mouse_DoubleClick"/>
                             </Style>
-                        </ListBox.ItemContainerStyle>
-                        <ListBox.ItemTemplate>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                        <StackPanel Orientation="Vertical">
-                                            <TextBlock x:Name="changelogName" Text="{Binding Name}" Margin="5,5,5,0" FontSize="25" VerticalAlignment="Top"/>
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock x:Name="changesText" Text="Double click to read changes." Margin="5,0,10,5" FontSize="15" VerticalAlignment="Bottom"/>
-                                            </StackPanel>
-                                        </StackPanel>
-                                    </StackPanel>
+                                    <Border CornerRadius="4" BorderThickness="2" BorderBrush="{Binding RarityBorder}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                        <Grid>
+                                            <Grid MinHeight="50">
+                                                <TextBlock x:Name="changesText" Text="{Binding UpdateType}" Margin="5,0,10,5" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Top"/>
+                                                <TextBlock x:Name="changelogName" Text="{Binding Name}" Margin="5,7,5,2" FontSize="25" VerticalAlignment="Bottom"/>
+                                            </Grid>
+                                            <Image Width="35" Height="35" ToolTip="{Binding ImportantUpdateReason}" ToolTipService.InitialShowDelay="0" Visibility="{Binding ImportantUpdate}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,200,0" Source="/Dictionaries/AlertIcon.png"/>
+                                            <Button DataContext="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Content="Read Changes" Width="180" FontSize="20" Margin="0,0,5,0" Style="{StaticResource NormalButton}" HorizontalAlignment="Right" VerticalAlignment="Center" Click="Read_Button_Clicked"/>
+                                        </Grid>
+                                    </Border>
                                 </Grid>
                             </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                        </ListView.ItemTemplate>
+                    </ListView>
                     <TextBlock x:Name="loadingText" Text="Loading..." FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Grid>
             </Grid>

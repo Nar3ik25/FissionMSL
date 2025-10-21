@@ -1,5 +1,5 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-08-15 at 17:24
+// Last changed on 2025-10-21 at 02:07
 // First we mine, then we craft!
 
 using MinecraftServerLauncher.ViewModels;
@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace MinecraftServerLauncher.UserControls
 {
@@ -49,6 +50,36 @@ namespace MinecraftServerLauncher.UserControls
             major = ushort.Parse(versionStrings[1]);
             minor = ushort.Parse(versionStrings[2]);
             patch = ushort.Parse(versionStrings[3]);
+        }
+
+        internal string GetUpdateType(Version _previousVersion)
+        {
+            if (release > _previousVersion.release)
+            {
+                return "Release";
+            }
+            else
+            {
+                if (major > _previousVersion.major)
+                {
+                    return "Major Update";
+                }
+                else
+                {
+                    if (minor > _previousVersion.minor)
+                    {
+                        return "Minor Update";
+                    }
+                    else
+                    {
+                        if (patch > _previousVersion.patch)
+                        {
+                            return "Patch";
+                        }
+                    }
+                }
+            }
+            return "Undefined";
         }
 
         internal bool IsDifferentThan(Version _otherVersion)
@@ -173,6 +204,14 @@ namespace MinecraftServerLauncher.UserControls
         }
     }
 
+    public enum LogType
+    {
+        Bugfix,
+        Addition,
+        Change,
+        Undefined
+    }
+
     /// <summary>
     /// Interaction logic for UpdatesView.xaml
     /// </summary>
@@ -201,11 +240,48 @@ namespace MinecraftServerLauncher.UserControls
             MainWindow.Instance.Close();
         }
 
+        private void Read_Button_Clicked(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            ListBoxItem listBoxItem = button.DataContext as ListBoxItem;
+
+            foreach (var item in changelogListBox.Items)
+            {
+                if (item == listBoxItem.Content)
+                {
+                    changelogListBox.SelectedItem = item;
+                }
+            }
+
+            ChangeLogViewerDialog changeLogViewer = new();
+            changeLogViewer.Owner = MainWindow.Instance;
+            changeLogViewer.updateType.Text = LoadChangeLogs.ChangeLogs[changelogListBox.SelectedIndex].UpdateType;
+            changeLogViewer.changelogTitle.Text = LoadChangeLogs.ChangeLogs[changelogListBox.SelectedIndex].Name;
+            changeLogViewer.rarityBorder.BorderBrush = LoadChangeLogs.ChangeLogs[changelogListBox.SelectedIndex].RarityBorder;
+            changeLogViewer.importantUpdateSymbol.Visibility = LoadChangeLogs.ChangeLogs[changelogListBox.SelectedIndex].ImportantUpdate;
+            changeLogViewer.importantUpdateSymbol.ToolTip = LoadChangeLogs.ChangeLogs[changelogListBox.SelectedIndex].ImportantUpdateReason;
+            changeLogViewer.bugfixList.Document.Blocks.Clear();
+            changeLogViewer.bugfixList.Document.Blocks.Add(new Paragraph(new Run(LoadChangeLogs.ChangeLogs[changelogListBox.SelectedIndex].BugFixes)));
+            changeLogViewer.additionList.Document.Blocks.Clear();
+            changeLogViewer.additionList.Document.Blocks.Add(new Paragraph(new Run(LoadChangeLogs.ChangeLogs[changelogListBox.SelectedIndex].Additions)));
+            changeLogViewer.changeList.Document.Blocks.Clear();
+            changeLogViewer.changeList.Document.Blocks.Add(new Paragraph(new Run(LoadChangeLogs.ChangeLogs[changelogListBox.SelectedIndex].Changes)));
+            changeLogViewer.ShowDialog();
+        }
+
         private void OnListBoxItem_Mouse_DoubleClick(object sender, RoutedEventArgs e)
         {
             ChangeLogViewerDialog changeLogViewer = new();
             changeLogViewer.Owner = MainWindow.Instance;
+            changeLogViewer.updateType.Text = LoadChangeLogs.ChangeLogs[changelogListBox.SelectedIndex].UpdateType;
             changeLogViewer.changelogTitle.Text = LoadChangeLogs.ChangeLogs[changelogListBox.SelectedIndex].Name;
+            changeLogViewer.rarityBorder.BorderBrush = LoadChangeLogs.ChangeLogs[changelogListBox.SelectedIndex].RarityBorder;
+            changeLogViewer.importantUpdateSymbol.Visibility = LoadChangeLogs.ChangeLogs[changelogListBox.SelectedIndex].ImportantUpdate;
+            changeLogViewer.importantUpdateSymbol.ToolTip = LoadChangeLogs.ChangeLogs[changelogListBox.SelectedIndex].ImportantUpdateReason;
+            changeLogViewer.bugfixList.Document.Blocks.Clear();
+            changeLogViewer.bugfixList.Document.Blocks.Add(new Paragraph(new Run(LoadChangeLogs.ChangeLogs[changelogListBox.SelectedIndex].BugFixes)));
+            changeLogViewer.additionList.Document.Blocks.Clear();
+            changeLogViewer.additionList.Document.Blocks.Add(new Paragraph(new Run(LoadChangeLogs.ChangeLogs[changelogListBox.SelectedIndex].Additions)));
             changeLogViewer.changeList.Document.Blocks.Clear();
             changeLogViewer.changeList.Document.Blocks.Add(new Paragraph(new Run(LoadChangeLogs.ChangeLogs[changelogListBox.SelectedIndex].Changes)));
             changeLogViewer.ShowDialog();
@@ -237,7 +313,7 @@ namespace MinecraftServerLauncher.UserControls
             else
             {
                 MainWindow.Instance.updateNotifier.Visibility = Visibility.Hidden;
-                topText.Text = "No updates found.";
+                topText.Text = "You are on the latest version.";
             }
         }
 
@@ -245,6 +321,8 @@ namespace MinecraftServerLauncher.UserControls
         {
             if (changeLogs != null)
             {
+                Version PreviousVersion = new Version(0, 0, 0, 0);
+
                 for (int i = 0; i < changeLogs.Length; i++)
                 {
                     string line = changeLogs[i];
@@ -255,33 +333,127 @@ namespace MinecraftServerLauncher.UserControls
 
                         changeLog.Name = line.Substring(line.IndexOf('>') + 1);
 
+                        var cLVersionString = line.Substring(line.IndexOf('n') + 2);
+                        changeLog.VersionNum = new Version(cLVersionString);
+                        changeLog.UpdateType = changeLog.VersionNum.GetUpdateType(PreviousVersion);
+                        PreviousVersion = changeLog.VersionNum;
+
+                        switch (changeLog.UpdateType)
+                        {
+                            case "Patch":
+                                changeLog.RarityBorder = (GradientBrush)FindResource("Launcher.Rarity.RareGradient");
+                                break;
+                            case "Minor Update":
+                                changeLog.RarityBorder = (GradientBrush)FindResource("Launcher.Rarity.EpicGradient");
+                                break;
+                            case "Major Update":
+                                changeLog.RarityBorder = (GradientBrush)FindResource("Launcher.Rarity.LegendaryGradient");
+                                break;
+                            case "Release":
+                                changeLog.RarityBorder = (GradientBrush)FindResource("Launcher.Rarity.LegendaryGradient");
+                                break;
+                            default:
+                                changeLog.RarityBorder = (GradientBrush)FindResource("Launcher.Rarity.UndefinedGradient");
+                                break;
+                        }
+
+                        List<string> additionLines = new();
                         List<string> changeLines = new();
+                        List<string> bugFixLines = new();
+                        bool searchSkip = false;
                         bool searchEnd = false;
                         int nextId = i + 1;
+                        LogType type = LogType.Undefined;
 
                         if (changeLogs[nextId].StartsWith('{'))
                         {
                             while (!searchEnd)
                             {
                                 nextId++;
-                                if (!changeLogs[nextId].StartsWith('}'))
+                                searchSkip = false;
+
+                                if (string.IsNullOrEmpty(changeLogs[nextId]))
                                 {
-                                    changeLines.Add(changeLogs[nextId]);
+                                    searchSkip = true;
                                 }
-                                else
+                                else if (changeLogs[nextId].StartsWith("Bug Fixes:"))
                                 {
-                                    searchEnd = true;
+                                    type = LogType.Bugfix;
+                                    searchSkip = true;
+                                }
+                                else if (changeLogs[nextId].StartsWith("Additions:"))
+                                {
+                                    type = LogType.Addition;
+                                    searchSkip = true;
+                                }
+                                else if (changeLogs[nextId].StartsWith("Changes:"))
+                                {
+                                    type = LogType.Change;
+                                    searchSkip = true;
+                                }
+
+                                // Skips this line if it is a header line
+                                if (!searchSkip)
+                                {
+                                    // Checks if this line is the end, if not adds the line into it's specific block of the change log
+                                    if (!changeLogs[nextId].StartsWith('}'))
+                                    {
+                                        switch (type)
+                                        {
+                                            case LogType.Bugfix:
+                                                bugFixLines.Add(changeLogs[nextId]);
+                                                break;
+                                            case LogType.Addition:
+                                                additionLines.Add(changeLogs[nextId]);
+                                                break;
+                                            case LogType.Change:
+                                                changeLines.Add(changeLogs[nextId]);
+                                                break;
+                                            case LogType.Undefined:
+                                                changeLines.Add(changeLogs[nextId]);
+                                                break;
+                                        }
+                                    }
+                                    else if (changeLogs[nextId].StartsWith("}!"))
+                                    {
+                                        changeLog.ImportantUpdate = Visibility.Visible;
+                                        changeLog.ImportantUpdateReason = changeLogs[nextId].Substring(changeLogs[nextId].IndexOf('!') + 1);
+                                        searchEnd = true;
+                                    }
+                                    else
+                                    {
+                                        searchEnd = true;
+                                    }
                                 }
                             }
 
-                            string content = "";
-
+                            // Adds the changes into the changes block of the change log
+                            string changeContent = "";
                             foreach (var change in changeLines)
                             {
-                                content += change + "\n";
+                                changeContent += change + "\n";
                             }
+                            if (!string.IsNullOrEmpty(changeContent))
+                                changeLog.Changes = changeContent;
 
-                            changeLog.Changes = content;
+                            // Adds the additions into the additions block of the change log
+                            string additionContent = "";
+                            foreach (var addition in additionLines)
+                            {
+                                additionContent += addition + "\n";
+                            }
+                            if (!string.IsNullOrEmpty(additionContent))
+                                changeLog.Additions = additionContent;
+
+                            // Adds the bug fixes into the bug fix block of the change log
+                            string bugFixContent = "";
+                            foreach (var bugFix in bugFixLines)
+                            {
+                                bugFixContent += bugFix + "\n";
+                            }
+                            if (!string.IsNullOrEmpty(bugFixContent))
+                                changeLog.BugFixes = bugFixContent;
+
 
                             localChangeLogs.Add(changeLog);
                         }

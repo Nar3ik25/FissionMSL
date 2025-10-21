@@ -34,6 +34,7 @@
 		<Resource Include="Dictionaries\UpdateIcon1.png" />
 		<Resource Include="Dictionaries\CommandsIcon1.png" />
 		<Resource Include="Dictionaries\ServerMysteryIcon.png" />
+		<Resource Include="Dictionaries\AlertIcon.png" />
 	</ItemGroup>
 
 </Project>

@@ -1,9 +1,12 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-04-28 at 00:27
+// Last changed on 2025-10-21 at 02:08
 // That's right, it goes in the square hole!
 
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Windows;
+using System.Windows.Media;
+using Version = MinecraftServerLauncher.UserControls.Version;
 
 namespace MinecraftServerLauncher.ViewModels
 {
@@ -11,7 +14,14 @@ namespace MinecraftServerLauncher.ViewModels
     public class ChangeLog
     {
         public string Name { get; set; }
-        public string Changes { get; set; }
+        public string BugFixes { get; set; } = "None.";
+        public string Additions { get; set; } = "None.";
+        public string Changes { get; set; } = "None.";
+        public Visibility ImportantUpdate { get; set; } = Visibility.Hidden;
+        public string ImportantUpdateReason { get; set; } = string.Empty;
+        public string UpdateType { get; set; }
+        public Version VersionNum { get; set; }
+        public GradientBrush RarityBorder { get; set; } = new LinearGradientBrush();
     }
 
     internal class LoadChangeLogs
