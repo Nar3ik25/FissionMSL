@@ -1,5 +1,5 @@
 ﻿// Made by Kieran Kelly
-// Last changed on 2025-10-21 at 02:07
+// Last changed on 2025-10-21 at 02:55
 // First we mine, then we craft!
 
 using MinecraftServerLauncher.ViewModels;
@@ -357,6 +357,7 @@ namespace MinecraftServerLauncher.UserControls
                                 break;
                         }
 
+                        string nameSuffix = string.Empty;
                         List<string> additionLines = new();
                         List<string> changeLines = new();
                         List<string> bugFixLines = new();
@@ -367,6 +368,12 @@ namespace MinecraftServerLauncher.UserControls
 
                         if (changeLogs[nextId].StartsWith('{'))
                         {
+                            if (changeLogs[nextId].Length != 1)
+                            {
+                                nameSuffix = changeLogs[nextId].Substring(changeLogs[nextId].IndexOf('{') + 1);
+                                changeLog.Name = changeLog.Name + " - " + nameSuffix;
+                            }
+
                             while (!searchEnd)
                             {
                                 nextId++;
@@ -468,12 +475,12 @@ namespace MinecraftServerLauncher.UserControls
                 }
                 else
                 {
-                    loadingText.Text = "Cannot load changelog!";
+                    loadingText.Text = "Cannot load change history!";
                 }
             }
             else
             {
-                loadingText.Text = "Cannot load changelog!";
+                loadingText.Text = "Cannot load change history!";
             }
         }
 
